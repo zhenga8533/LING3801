@@ -14,8 +14,16 @@ def load_data(file_path):
 
 def analyze_cipher(text: str):
     print(text)
+    text.replace('\n', '')
     search = text.find('the') != -1
     print(f'Occurance of the word \'the\': {search}')
+
+
+def save_cipher(text: str):
+    file_path = input('Enter output file name: ')
+    with open(file_path, 'w') as file:
+        file.write(text)
+        print(f'Successfully saved data to {file_path}!')
 
 
 if __name__ == '__main__':
@@ -26,22 +34,28 @@ if __name__ == '__main__':
         exit(1)
 
     # Other variables and constants
-    ciphers = [shift_cipher]
+    ciphers = [shift_cipher, save_cipher]
+    decoded_cipher = ''
     n = len(ciphers)
 
     while True:
         # select cipher
         choice = input('\nCiphers: \n'
                        '1. Shift Cipher\n'
-                       '2. Quit\n'
+                       '2. Save Cipher\n'
+                       '3. Quit\n'
                        'Select a ciper: ')
-        if not choice.isdigit() or int(choice) == n + 1:
+        if not choice.isdigit() or int(choice) == 3:
             break
         option = (int(choice) - 1) % n
         cipher = ciphers[option]
+        print()
 
         # decode and analyze ciphers based on choice
-        decoded_cipher = cipher(cipher_text)
-        analyze_cipher(decoded_cipher)
+        if option == 1:
+            cipher(decoded_cipher)
+        else:
+            decoded_cipher = cipher(cipher_text)
+            analyze_cipher(decoded_cipher)
 
     print('Goodbye!')
