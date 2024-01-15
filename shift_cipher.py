@@ -6,24 +6,24 @@ def shift_cipher(text: str):
     shift = int(shift)
 
     shifted_text = ''
-    base = ord('A')
 
     # print out the mapping
+    mapping = dict()
     print('\nKey Mapping:')
-    for letter in range(ord('a'), ord('z') + 1):
+    for letter in range(ord('A'), ord('Z') + 1):
         print(chr(letter), end=' ')
     print()
-    for letter in range(ord('A'), ord('Z') + 1):
-        shifted_letter = chr((letter - ord('A') + shift) % 26 + ord('A'))
+    for letter in range(ord('a'), ord('z') + 1):
+        shifted_letter = chr((letter - ord('a') + shift) % 26 + ord('a'))
+        mapping[chr(letter).upper()] = shifted_letter
         print(shifted_letter, end=' ')
 
+    # decode cipher
     print('\nDecoded Cipher:')
     for c in text:
-        if c.isalpha():
-            ascii_value = ord(c.upper())
-            shifted_ascii = (ascii_value - base + shift) % 26 + base
-            shifted_text += chr(shifted_ascii).lower()
-        elif c == '\n':
+        if c.isupper():
+            shifted_text += mapping[c]
+        else:
             shifted_text += c
 
     return shifted_text

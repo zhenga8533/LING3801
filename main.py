@@ -20,7 +20,7 @@ def analyze_cipher(text: str):
 
 
 def save_cipher(text: str):
-    file_path = input('Enter output file name: ')
+    file_path = input('Enter output file path: ')
     with open(file_path, 'w') as file:
         file.write(text)
         print(f'Successfully saved data to {file_path}!')
@@ -28,7 +28,7 @@ def save_cipher(text: str):
 
 if __name__ == '__main__':
     # Get file data
-    input_file = input('Enter file path: ')
+    input_file = input('Enter input file path: ')
     cipher_text = load_data(input_file)
     if cipher_text is None:
         exit(1)
