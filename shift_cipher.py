@@ -1,4 +1,4 @@
-def shift_cipher(text: str):
+def shift_cipher(text: str) -> str:
     # get shift amount
     shift = ''
     while not shift.isdigit():
@@ -19,7 +19,6 @@ def shift_cipher(text: str):
         print(shifted_letter, end=' ')
 
     # decode cipher
-    print('\nDecoded Cipher:')
     for c in text:
         if c.isupper():
             shifted_text += mapping[c]
