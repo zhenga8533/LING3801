@@ -1,4 +1,11 @@
 def shift_cipher(text: str) -> str:
+    """
+    Shifts ciphertext by user inputted amount.
+
+    :param text: Caeser Shift ciphertext.
+    :return: Decoded plain text.
+    """
+
     # get shift amount
     shift = ''
     while not shift.isdigit():

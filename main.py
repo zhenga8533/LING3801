@@ -4,7 +4,14 @@ from ma_cipher import ma_cipher
 from vigenere_cipher import vigenere_cipher
 
 
-def load_data(file_path):
+def load_data(file_path: str) -> str or None:
+    """
+    Loads String data from a specified file path.
+
+    :param file_path: File path from current location.
+    :return: Data in the file or None if path does not exist.
+    """
+
     if os.path.exists(file_path):
         with open(file_path, 'r') as file:
             data = file.read()
@@ -14,14 +21,26 @@ def load_data(file_path):
     return None
 
 
-def analyze_cipher(text: str):
+def analyze_cipher(text: str) -> None:
+    """
+    Prints out and checks plain text for the word 'the'.
+
+    :param text: Decoded ciphertext to analyze.
+    """
+
     print(text)
     text.replace('\n', '')
     search = text.find('the') != -1
     print(f'Occurance of the word \'the\': {search}')
 
 
-def save_cipher(text: str):
+def save_cipher(text: str) -> None:
+    """
+    Saves plain text to user inputted file path.
+
+    :param text: Decoded ciphertext to save.
+    """
+
     file_path = input('Enter output file path: ')
     with open(file_path, 'w') as file:
         file.write(text)

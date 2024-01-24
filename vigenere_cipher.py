@@ -1,8 +1,15 @@
-def remove_repeating_and_non_alpha(input_str):
+def remove_repeating_and_non_alpha(text: str) -> str:
+    """
+    Removes any repeating or non alpha characters from string.
+
+    :param text: String to strip characters from.
+    :return: Inputted string without only non-repeating alpha characters.
+    """
+
     result = []
     prev_char = None
 
-    for char in input_str:
+    for char in text:
         if char.isalpha():
             if char != prev_char:
                 result.append(char)
@@ -11,7 +18,13 @@ def remove_repeating_and_non_alpha(input_str):
     return ''.join(result)
 
 
-def vigenere_mapping(keyword):
+def vigenere_mapping(keyword: str) -> None:
+    """
+    Prints out the vigenere mapping of a keyword.
+
+    :param keyword: Vigenere cipher keyword.
+    """
+
     print('\nKey Mapping:')
     print(' '.join(chr(char) for char in range(ord('a'), ord('z') + 1)))
 
@@ -24,6 +37,13 @@ def vigenere_mapping(keyword):
 
 
 def vigenere_cipher(text: str) -> str:
+    """
+    Decode/encodes Vigenere text given inputted keyword.
+
+    :param text: Vigenere text to be analyzed.
+    :return: Decoded/encoded Vigenere text.
+    """
+
     keyword = remove_repeating_and_non_alpha(input('Enter keyword: ').upper())
     vigenere_mapping(keyword)
     key_length = len(keyword)

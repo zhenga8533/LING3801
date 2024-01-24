@@ -2,6 +2,13 @@ from collections import defaultdict
 
 
 def ma_cipher(text: str) -> str:
+    """
+    Attempts to use frequency analysis (very simpified) to decode ciphertext.
+
+    :param text: Monoalphabetic ciphertext to be decoded.
+    :return: 'Decoded' plain text.
+    """
+
     # Letter frequency data from most to least from:
     # https://www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html
     frequency_table = ['e', 'a', 'r', 'i', 'o', 't', 'n', 's', 'l', 'c', 'u', 'd', 'p', 'm', 'h', 'g', 'b', 'f', 'y',
