@@ -3,7 +3,11 @@
     padding: 0;
     margin: 0;
     font-family: monospace;
-    overflow-x: hidden;
+}
+
+body {
+    overflow: hidden;
+    overflow-y: scroll;
 }
 
 hr {
@@ -65,16 +69,28 @@ hr {
     resize: vertical;
 }
 
-/* Shift syling */
-.shift-container {
-    display: flex;
-}
-
 .input-container {
     display: flex;
     align-items: center;
     gap: 1rem;
     margin-top: 1rem;
+}
+
+/* Chart styling */
+.chart-container {
+    width: calc(100% - 2rem);
+    margin: 1rem;
+    padding: 1rem;
+}
+
+#columnchart {
+    height: 500px;
+    padding-right: 1rem;
+}
+
+/* Shift syling */
+.shift-container {
+    display: flex;
 }
 
 #shift-input {
