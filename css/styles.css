@@ -69,3 +69,15 @@ hr {
 .shift-container {
     display: flex;
 }
+
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#shift-input {
+    padding: 0 2px;
+    width: 2.5rem;
+}
