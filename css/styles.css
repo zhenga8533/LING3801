@@ -3,6 +3,11 @@
     padding: 0;
     margin: 0;
     font-family: monospace;
+    overflow-x: hidden;
+}
+
+hr {
+    margin: 2rem;
 }
 
 /* Nav bar styling */
@@ -40,4 +45,27 @@
     flex-direction: column;
     height: 90vh;
     font-size: xx-large;
+}
+
+/* Textbox styling */
+.text-container {
+    width: calc(100% - 2rem);
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.textbox {
+    width: calc(100% - 2rem);
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    height: 200px;
+    resize: vertical;
+}
+
+/* Shift syling */
+.shift-container {
+    display: flex;
 }
