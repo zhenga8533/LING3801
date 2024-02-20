@@ -37,7 +37,7 @@ google.charts.setOnLoadCallback(drawChart);
  */
 function drawChart() {
     // Count letter frequency
-    const shift = parseInt(document.getElementById("shift-input").value);
+    const shift = ((parseInt(document.getElementById("shift-input").value) % 26) + 26) % 26;
     const letterFrequency = {};
     const shiftText = document.getElementById("shift-text").value;
     let plainText = "";
@@ -60,7 +60,7 @@ function drawChart() {
         let index = i - base + 1;
         frequency[index][1] = freq;
         index = (index + shift - 1) % 26 + 1;
-        frequency[index][3] = shift === 0 ? 0 : freq;
+        frequency[index][3] = freq;
     }
 
     // Update column chart
@@ -72,6 +72,9 @@ function drawChart() {
     };
     var chart = new google.charts.Bar(document.getElementById('columnchart'));
     chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    // Update shift label
+    document.getElementById("shift-label").textContent = shift;
 }
 document.getElementById("shift-button").onclick = drawChart;
 

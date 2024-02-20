@@ -83,12 +83,19 @@ hr {
     padding: 1rem;
 }
 
+.chart-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
 #columnchart {
-    height: 500px;
+    height: 560px;
     padding-right: 1rem;
 }
 
-/* Shift syling */
+/* Shift cipher styling */
 .shift-container {
     display: flex;
 }
@@ -96,4 +103,8 @@ hr {
 #shift-input {
     padding: 0 2px;
     width: 2.5rem;
+}
+
+#shift-label {
+    margin: 0 0.5rem;
 }
