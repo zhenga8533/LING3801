@@ -10,6 +10,10 @@ body {
     overflow-y: scroll;
 }
 
+.body-container {
+    display: flex;
+}
+
 hr {
     margin: 2rem;
 }
@@ -21,17 +25,11 @@ hr {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    height: 10vh;
-}
-
-#nav li {
-    display: inline-block;
-    position: relative;
 }
 
 .nav-item {
     display: block;
-    padding: 1.5rem 25px;
+    padding: 1rem 25px;
     color: white;
     text-decoration: none;
     text-align: center;
@@ -95,11 +93,16 @@ hr {
     padding-right: 1rem;
 }
 
-/* Shift cipher styling */
-.shift-container {
-    display: flex;
+/* Table styling */
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(140 140 140);
+    font-family: sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
 }
 
+/* Shift cipher styling */
 #shift-input {
     padding: 0 2px;
     width: 2.5rem;

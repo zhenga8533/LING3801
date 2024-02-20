@@ -20,28 +20,28 @@
     <div id="body-container">
         <div class="text-container">
             <h3>Enter cipher text:</h3>
-            <textarea class="textbox" id="shift-text" placeholder="Enter text here..."></textarea>
+            <textarea class="textbox" id="cipher-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
-                <h3>Enter shift amount: </h3>
+                <h3>Enter fence height: </h3>
                 <input id="shift-input" type="number" value="0">
-                <button id="shift-button">Shift</button>
+                <button id="build-button">Build</button>
             </div>
             <br>
-            <h3>Plain text:</h3>
-            <textarea disabled class="textbox" id="plain-text"></textarea>
         </div>
         <hr>
-        <div class="chart-container">
-            <div id="columnchart"></div>
-            <div class="chart-nav">
-                <button id="left-shift">Shift Left</button>
-                <p id="shift-label">0</p>
-                <button id="right-shift">Shift Right</button>
-            </div>
+        <div class="text-container">
+            <h3>Fence:</h3>
+            <table id="fence-table">
+            </table>
+        </div>
+        <hr>
+        <div class="text-container">
+            <h3>Plain text:</h3>
+            <textarea disabled class="textbox" id="plain-text"></textarea>
         </div>
     </div>
     
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="module" src="js/shift.js"></script>
+    <script type="module" src="js/fence.js"></script>
 </body>
 </html>
