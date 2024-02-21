@@ -1,3 +1,21 @@
+function createHtmlTableFromArray(array) {
+    let table = '<table border="1">';
+    for (let i = 0; i < array.length; i++) {
+        table += '<tr>';
+        for (let j = 0; j < array[i].length; j++) {
+            if (/[^A-Za-z]/g.test(array[i][j])) {
+                table += '<td>' + array[i][j] + '</td>';
+            } else {
+                table += `<td><b>${array[i][j]}</b></td>`;
+            }
+        }
+        table += '</tr>';
+    }
+    table += '</table>';
+
+    document.getElementById("fence-table").innerHTML = table;
+}
+
 /**
  * 
  */
@@ -7,7 +25,7 @@ function encryptFence() {
     const positive = height > 0;
     height = Math.abs(height);
     if (height <= 1) return;
-
+    
     // Fence and text variables
     const fence = Array.from({ length: height }, () => []);
     const plainText = document.getElementById("plain-text").value.replace(/[^A-Za-z]/g, '');
@@ -22,10 +40,10 @@ function encryptFence() {
         // Update the index and direction
         if (index === 0) {
             direction = 1;
-            if (i != 0) fence[index].push(undefined);
+            if (i != 0) fence[index].push("↓");
         } else if (index === height - 1) {
             direction = -1;
-            if (i != 0) fence[index].push(undefined);
+            if (i != 0) fence[index].push("↑");
         }
         index += direction;
     }
@@ -35,11 +53,14 @@ function encryptFence() {
     for (let i = 0; i < height; i++) {
         let row = fence[i];
         for (let j = 0; j < row.length; j++) {
-            if (row[j] !== undefined) cipherText += row[j].toUpperCase();
+            if (/^[a-zA-Z]+$/.test(row[j])) cipherText += row[j].toUpperCase();
         }
         cipherText += " ";
     }
     document.getElementById("cipher-text").value = cipherText;
+
+    // Update table
+    createHtmlTableFromArray(fence);
 }
 document.getElementById("encrypt-button").onclick = encryptFence;
 
@@ -61,15 +82,15 @@ function decipherFence() {
     let index = positive ? height - 1 : 0;
     let direction = positive ? -1 : 1;
     for (let i in cipherText) {
-        fence[index].push("");
+        fence[index].push("a");
 
         // Update the index and direction
         if (index === 0) {
             direction = 1;
-            if (i != 0) fence[index].push(undefined);
+            if (i != 0) fence[index].push("↓");
         } else if (index === height - 1) {
             direction = -1;
-            if (i != 0) fence[index].push(undefined);
+            if (i != 0) fence[index].push("↑");
         }
         index += direction;
     }
@@ -79,7 +100,7 @@ function decipherFence() {
     for (let i = 0; i < height; i++) {
         let row = fence[i];
         for (let j = 0; j < row.length; j++) {
-            if (row[j] !== undefined) row[j] = cipherText[index++];
+            if (/^[a-zA-Z]+$/.test(row[j])) row[j] = cipherText[index++];
         }
     }
 
@@ -91,7 +112,8 @@ function decipherFence() {
     for (let i = 0; i < length; i++) {
         // Loop through i index of each row
         for (let j = index; (index === 0 && j < height) || (index === height - 1 && j >= 0); j += direction) {
-            if (fence[j][i] !== undefined) plainText += fence[j][i].toLowerCase();
+            if (fence[j][i] === undefined) break;
+            if (/^[a-zA-Z]+$/.test(fence[j][i])) plainText += fence[j][i].toLowerCase();
         }
 
         // Reverse index and direction
@@ -99,5 +121,8 @@ function decipherFence() {
         direction = -direction;
     }
     document.getElementById("plain-text").value = plainText;
+    
+    // Update table
+    createHtmlTableFromArray(fence);
 }
 document.getElementById("decipher-button").onclick = decipherFence;
