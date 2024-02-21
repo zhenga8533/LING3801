@@ -51,13 +51,13 @@ hr {
 
 /* Textbox styling */
 .text-container {
-    width: calc(100% - 2rem);
+    width: calc(100% - 4rem);
     margin: 1rem;
     padding: 1rem;
 }
 
 .textbox {
-    width: calc(100% - 2rem);
+    width: 100%;
     padding: 1rem;
     margin-top: 0.5rem;
     border: 1px solid #ccc;
@@ -95,7 +95,7 @@ hr {
 
 /* Table styling */
 .table-container {
-    width: calc(100% - 2rem);
+    width: calc(100% - 4rem);
     margin: 1rem;
     padding: 1rem;
     overflow-x: scroll;
@@ -104,7 +104,6 @@ hr {
 table {
     border-collapse: collapse;
     margin-top: 0.5rem;
-    margin-right: 2rem;
 }
 
 td, th {

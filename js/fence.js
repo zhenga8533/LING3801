@@ -1,4 +1,9 @@
-function createHtmlTableFromArray(array) {
+/**
+ * Converts an array of string into a HTML table element and sets fence-table into it.
+ * 
+ * @param {String[]} array - An array of chars.
+ */
+function createTable(array) {
     let table = '<table border="1">';
     for (let i = 0; i < array.length; i++) {
         table += '<tr>';
@@ -17,7 +22,7 @@ function createHtmlTableFromArray(array) {
 }
 
 /**
- * 
+ * Encrypts the encrypt-input textarea.
  */
 function encryptFence() {
     // Validate height of fence
@@ -60,12 +65,12 @@ function encryptFence() {
     document.getElementById("cipher-text").value = cipherText;
 
     // Update table
-    createHtmlTableFromArray(fence);
+    createTable(fence);
 }
 document.getElementById("encrypt-button").onclick = encryptFence;
 
 /**
- * 
+ * Decrypts the decrypt-input textarea.
  */
 function decipherFence() {
     // Validate height
@@ -123,6 +128,6 @@ function decipherFence() {
     document.getElementById("plain-text").value = plainText;
     
     // Update table
-    createHtmlTableFromArray(fence);
+    createTable(fence);
 }
 document.getElementById("decipher-button").onclick = decipherFence;
