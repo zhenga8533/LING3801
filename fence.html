@@ -23,8 +23,8 @@
             <textarea class="textbox" id="cipher-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
                 <h3>Enter fence height: </h3>
-                <input id="shift-input" type="number" value="0">
-                <button id="build-button">Build</button>
+                <input id="decrypt-input" class="number-input" type="number" value="0">
+                <button id="decipher-button">Decrypt</button>
             </div>
             <br>
         </div>
@@ -37,7 +37,12 @@
         <hr>
         <div class="text-container">
             <h3>Plain text:</h3>
-            <textarea disabled class="textbox" id="plain-text"></textarea>
+            <textarea class="textbox" id="plain-text"></textarea>
+            <div class="input-container">
+                <h3>Enter fence height: </h3>
+                <input id="encrypt-input" class="number-input" type="number" value="0">
+                <button id="encrypt-button">Encrypt</button>
+            </div>
         </div>
     </div>
     

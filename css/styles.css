@@ -103,7 +103,7 @@ table {
 }
 
 /* Shift cipher styling */
-#shift-input {
+.number-input {
     padding: 0 2px;
     width: 2.5rem;
 }
