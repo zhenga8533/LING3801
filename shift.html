@@ -23,12 +23,19 @@
             <textarea class="textbox" id="shift-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
                 <h3>Enter shift amount: </h3>
-                <input id="shift-input" type="number" value="0">
-                <button id="shift-button">Shift</button>
+                <input id="cipher-shift" type="number" value="0">
+                <button id="decrypt-button">Decrypt</button>
             </div>
-            <br>
+        </div>
+        <hr>
+        <div class="text-container">
             <h3>Plain text:</h3>
-            <textarea disabled class="textbox" id="plain-text"></textarea>
+            <textarea class="textbox" id="plain-text"></textarea>
+            <div class="input-container">
+                <h3>Enter shift amount: </h3>
+                <input id="plain-shift" type="number" value="0">
+                <button id="encrypt-button">Encrypt</button>
+            </div>
         </div>
         <hr>
         <div class="chart-container">

@@ -1,5 +1,5 @@
 const frequency = [
-    ["Letter", "Cipher", "Standard", "Shifted"],
+    ["Letter", "Plain", "Standard", "Cipher"],
     ['a', 0, 0.082, 0],
     ['b', 0, 0.015, 0],
     ['c', 0, 0.028, 0],
@@ -30,20 +30,79 @@ const frequency = [
 
 // Load Google-Chart functions
 google.charts.load('current', {'packages':['bar']});
-google.charts.setOnLoadCallback(drawChart);
+google.charts.setOnLoadCallback(decryptShift);
 
 /**
- * 
+ * Update google bar chart.
  */
 function drawChart() {
+    const data = google.visualization.arrayToDataTable(frequency);
+    const options = {
+        chart: {
+            title: 'Frequency Graph'
+        }
+    };
+    const chart = new google.charts.Bar(document.getElementById('columnchart'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+}
+
+/**
+ * Encrypt plain text by shifting.
+ */
+function encryptShift() {
     // Count letter frequency
-    const shift = ((parseInt(document.getElementById("shift-input").value) % 26) + 26) % 26;
+    const shift = ((parseInt(document.getElementById("plain-shift").value) % 26) + 26) % 26;
+    const letterFrequency = {};
+    const plainText = document.getElementById("plain-text").value;
+    let shiftText = "";
+    const count = plainText.length;
+    let base = 'a'.charCodeAt(0);
+
+    // Update shift label
+    document.getElementById("cipher-shift").value = (26 - shift) % 26;
+    
+    // Count letter frequency
+    for (let i in plainText) {
+        let c = plainText[i].toLowerCase();
+        if (/^[a-zA-Z]$/.test(c)) {
+            letterFrequency[c] = (letterFrequency[c] ?? 0) + 1;
+            let shifted = String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base);
+            shiftText += shifted;
+        } else shiftText += c;
+    }
+    document.getElementById("shift-text").value = shiftText;
+    
+    // Set frequency chart data
+    for (let i = base; i < base + 26; i++) {
+        let freq = (letterFrequency[String.fromCharCode(i)] ?? 0) / count;
+        let index = i - base + 1;
+        frequency[index][1] = freq;
+        index = (index + shift - 1) % 26 + 1;
+        frequency[index][3] = freq;
+    }
+
+    // Update column chart
+    drawChart();
+}
+document.getElementById("encrypt-button").onclick = encryptShift;
+
+/**
+ * Decrypt cipher text by shifting.
+ */
+function decryptShift() {
+    // Count letter frequency
+    const shift = ((parseInt(document.getElementById("cipher-shift").value) % 26) + 26) % 26;
     const letterFrequency = {};
     const shiftText = document.getElementById("shift-text").value;
     let plainText = "";
     const count = shiftText.length;
     let base = 'a'.charCodeAt(0);
+
+    // Update shift labels
+    document.getElementById("shift-label").textContent = shift;
+    document.getElementById("plain-shift").value = (26 - shift) % 26;
     
+    // Count letter frequency
     for (let i in shiftText) {
         let c = shiftText[i].toLowerCase();
         if (/^[a-zA-Z]$/.test(c)) {
@@ -58,34 +117,27 @@ function drawChart() {
     for (let i = base; i < base + 26; i++) {
         let freq = (letterFrequency[String.fromCharCode(i)] ?? 0) / count;
         let index = i - base + 1;
-        frequency[index][1] = freq;
-        index = (index + shift - 1) % 26 + 1;
         frequency[index][3] = freq;
+        index = (index + shift - 1) % 26 + 1;
+        frequency[index][1] = freq;
     }
 
     // Update column chart
-    var data = google.visualization.arrayToDataTable(frequency);
-    var options = {
-        chart: {
-            title: 'Frequency Graph'
-        }
-    };
-    var chart = new google.charts.Bar(document.getElementById('columnchart'));
-    chart.draw(data, google.charts.Bar.convertOptions(options));
-
-    // Update shift label
-    document.getElementById("shift-label").textContent = shift;
-}
-document.getElementById("shift-button").onclick = drawChart;
-
-function leftShift() {
-    document.getElementById("shift-input").value--;
     drawChart();
+}
+document.getElementById("decrypt-button").onclick = encryptShift;
+
+/**
+ * Shift buttons for easier decryption.
+ */
+function leftShift() {
+    document.getElementById("cipher-shift").value--;
+    decryptShift();
 }
 document.getElementById("left-shift").onclick = leftShift;
 
 function rightShift() {
-    document.getElementById("shift-input").value++;
-    drawChart();
+    document.getElementById("cipher-shift").value++;
+    decryptShift();
 }
 document.getElementById("right-shift").onclick = rightShift;
