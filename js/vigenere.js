@@ -45,19 +45,61 @@ function sortRepeats(dictionary) {
  * 
  * @param {String} graphName 
  */
-function drawChart(graphName) {
-    const data = google.visualization.arrayToDataTable(frequency);
-    const options = {
+function drawChart(graphName, frequency) {
+    var data = google.visualization.arrayToDataTable(frequency);
+    var options = {
         chart: {
             title: 'Frequency Graph'
         }
     };
-    const chart = new google.charts.Bar(document.getElementById(graphName));
+    var chart = new google.charts.Bar(document.getElementById(graphName));
     chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
 function updateCharts(count) {
-    console.log(count);
+    document.getElementById("charts").innerHTML = "";
+
+    for (let i = 0; i < count; i++) {
+        document.getElementById("charts").innerHTML += `<div id="chart-${i}" class="column-chart"></div>
+        <div class="chart-nav">
+            <button id="left-shift">Shift Left</button>
+            <p id="shift-label">0</p>
+            <button id="right-shift">Shift Right</button>
+        </div>`;
+    }
+
+    for (let i = 0; i < count; i++) {
+        let frequency = [
+            ["Letter", "Plain", "Standard", "Cipher"],
+            ['a', 0, 0.082, 0],
+            ['b', 0, 0.015, 0],
+            ['c', 0, 0.028, 0],
+            ['d', 0, 0.043, 0],
+            ['e', 0, 0.127, 0],
+            ['f', 0, 0.022, 0],
+            ['g', 0, 0.02, 0],
+            ['h', 0, 0.061, 0],
+            ['i', 0, 0.07, 0],
+            ['j', 0, 0.0015, 0],
+            ['k', 0, 0.0077, 0],
+            ['l', 0, 0.04, 0],
+            ['m', 0, 0.024, 0],
+            ['n', 0, 0.067, 0],
+            ['o', 0, 0.075, 0],
+            ['p', 0, 0.019, 0],
+            ['q', 0, 0.00095, 0],
+            ['r', 0, 0.06, 0],
+            ['s', 0, 0.063, 0],
+            ['t', 0, 0.091, 0],
+            ['u', 0, 0.028, 0],
+            ['v', 0, 0.0098, 0],
+            ['w', 0, 0.024, 0],
+            ['x', 0, 0.0015, 0],
+            ['y', 0, 0.02, 0],
+            ['z', 0, 0.00074, 0]
+        ];
+        drawChart("chart-" + i, frequency)
+    }
 }
 
 /**

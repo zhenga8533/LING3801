@@ -88,7 +88,7 @@ hr {
     margin-top: 1rem;
 }
 
-#columnchart {
+.column-chart {
     height: 560px;
     padding-right: 1rem;
 }

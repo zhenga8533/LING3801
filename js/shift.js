@@ -26,7 +26,7 @@ const frequency = [
     ['x', 0, 0.0015, 0],
     ['y', 0, 0.02, 0],
     ['z', 0, 0.00074, 0]
-];  
+];
 
 // Load Google-Chart functions
 google.charts.load('current', {'packages':['bar']});
