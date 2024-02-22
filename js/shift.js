@@ -128,7 +128,7 @@ function decryptShift() {
 document.getElementById("decrypt-button").onclick = decryptShift;
 
 /**
- * Shift buttons for easier decryption.
+ * Decrement shift value.
  */
 function leftShift() {
     document.getElementById("cipher-shift").value--;
@@ -136,6 +136,9 @@ function leftShift() {
 }
 document.getElementById("left-shift").onclick = leftShift;
 
+/**
+ * Increment shift value.
+ */
 function rightShift() {
     document.getElementById("cipher-shift").value++;
     decryptShift();

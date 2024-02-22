@@ -3,21 +3,22 @@ google.charts.load('current', {'packages':['bar']});
 let divs = 0;
 
 /**
+ * Find any repeating substrings in cipher text. 
  * 
- * @param {*} str 
- * @returns 
+ * @param {String} cipherText - Cipher text to find repeats from.
+ * @returns {Object} {"substring": {"frequency": int, "distance": int[]}}
  */
-function findRepeats(str) {
+function findRepeats(cipherText) {
     const repeats = {};
-    str = str.replace(/[^a-zA-Z]/g, '');
-    const n = str.length;
+    cipherText = cipherText.replace(/[^a-zA-Z]/g, '');
+    const n = cipherText.length;
     
     for (let i = 0; i < n - 6; i++) {
         for (let j = i + 3; j < n; j++) {
             // Check if valid repeat
             let sub = "";
             let k = 0;
-            while (j + k < n && str[i + k] == str[j + k] && sub.length < 7) sub += str[i + (k++)];
+            while (j + k < n && cipherText[i + k] == cipherText[j + k] && sub.length < 7) sub += cipherText[i + (k++)];
 
             // Update frequency
             if (sub.length > 2) {
@@ -39,12 +40,13 @@ function findRepeats(str) {
 }
 
 /**
+ * Sort repeats object by frequency.
  * 
- * @param {*} dictionary 
- * @returns 
+ * @param {Object} repeats - {"substring": {"frequency": int, "distance": int[]}}
+ * @returns {Object} repeats sorted by frequency
  */
-function sortRepeats(dictionary) {
-    return Object.entries(dictionary)
+function sortRepeats(repeats) {
+    return Object.entries(repeats)
         .sort((a, b) => b[1].frequency - a[1].frequency)
         .reduce((acc, [key, value]) => {
             acc[key] = value;
@@ -52,6 +54,9 @@ function sortRepeats(dictionary) {
         }, {});
 }
 
+/**
+ * Shift cipher text into plain text using provided shift values.
+ */
 function updatePlain() {
     const text = document.getElementById("cipher-text").value;
     const shifts = [];
@@ -75,23 +80,26 @@ function updatePlain() {
 }
 
 /**
+ * Update google column chart.
  * 
- * @param {String} graphName 
+ * @param {String} graphName - Graph ID to update.
+ * @param {Type[]} frequency - [[str, int, int, int]]
  */
 function drawChart(graphName, frequency) {
-    var data = google.visualization.arrayToDataTable(frequency);
-    var options = {
+    const data = google.visualization.arrayToDataTable(frequency);
+    const options = {
         chart: {
             title: 'Frequency Graph'
         }
     };
-    var chart = new google.charts.Bar(document.getElementById(graphName));
+    const chart = new google.charts.Bar(document.getElementById(graphName));
     chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
 /**
+ * Count frequency of each id x index of cipher text.
  * 
- * @param {*} id 
+ * @param {Number} id - ID of the shift number and column chart.
  */
 function updateChart(id) {
     // Load frequency into chart data
@@ -160,8 +168,9 @@ function updateChart(id) {
 }
 
 /**
+ * Update charts when user presses on keyword length.
  * 
- * @param {*} count 
+ * @param {Number} count - Length of suspected keyword.
  */
 function updateCharts(count) {
     // Set charts HTML
@@ -192,8 +201,7 @@ function updateCharts(count) {
 }
 
 /**
- * 
- * @param {*} length 
+ * Update table HTML using substring frequency of cipher text.
  */
 function updateTable() {
     // Find repeating substrings in cipher text.
