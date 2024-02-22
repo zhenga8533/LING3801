@@ -56,8 +56,8 @@ function drawChart(graphName) {
     chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
-function updateCharts() {
-
+function updateCharts(count) {
+    console.log(count);
 }
 
 /**
@@ -78,10 +78,6 @@ function updateTable() {
         header += `<th><button class="update-btn">${i + 2}</button></th>`;
     }
     table.innerHTML = header + "</tr>";
-
-    // Add event listeners to the buttons
-    const buttons = document.querySelectorAll('.update-btn');
-    buttons.forEach(button => button.onclick = updateCharts);
 
     // Update table body and count total factor occurences
     const factors = {};
@@ -109,6 +105,14 @@ function updateTable() {
         counter += `<td>${factors[factor]}</td>`;
     }
     table.innerHTML += `${counter}</tr> ${tableBody}`;
+
+    // Add event listeners to the buttons
+    const buttons = document.querySelectorAll('.update-btn');
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            updateCharts(button.textContent);
+        })
+    });
 }
 updateTable(20);
 document.getElementById("decipher-button").onclick = updateTable;
