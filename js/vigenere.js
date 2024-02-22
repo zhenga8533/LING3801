@@ -2,6 +2,11 @@
 google.charts.load('current', {'packages':['bar']});
 let divs = 0;
 
+/**
+ * 
+ * @param {*} str 
+ * @returns 
+ */
 function findRepeats(str) {
     const repeats = {};
     str = str.replace(/[^a-zA-Z]/g, '');
@@ -33,6 +38,11 @@ function findRepeats(str) {
     return repeats;
 }
 
+/**
+ * 
+ * @param {*} dictionary 
+ * @returns 
+ */
 function sortRepeats(dictionary) {
     return Object.entries(dictionary)
         .sort((a, b) => b[1].frequency - a[1].frequency)
@@ -40,6 +50,28 @@ function sortRepeats(dictionary) {
             acc[key] = value;
             return acc;
         }, {});
+}
+
+function updatePlain() {
+    const text = document.getElementById("cipher-text").value;
+    const shifts = [];
+    let plain = "";
+
+    // Collect shift values
+    for (let i = 0; i < divs; i++) {
+        shifts.push(parseInt(document.getElementById(`shift-${i}`).innerText));
+    }
+
+    // Shift plain text
+    let i = 0;
+    let base = "a".charCodeAt(0);
+    for (let c of text) {
+        if (/^[a-zA-Z0-9]+$/.test(c)) {
+            let shift = shifts[i++ % divs];
+            plain += String.fromCharCode((c.toLowerCase().charCodeAt(0) - base + shift) % 26 + base);
+        } else plain += c;
+    }
+    document.getElementById("plain-text").value = plain;
 }
 
 /**
@@ -57,6 +89,10 @@ function drawChart(graphName, frequency) {
     chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
+/**
+ * 
+ * @param {*} id 
+ */
 function updateChart(id) {
     // Load frequency into chart data
     const text = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, '');
@@ -117,9 +153,16 @@ function updateChart(id) {
     for (let i = 0; i < divs; i++) {
         keyword += String.fromCharCode((26 - document.getElementById(`shift-${i}`).innerText) % 26 + 65);
     }
-    document.getElementById("key").innerText = keyword;
+    document.getElementById("keyword").innerText = keyword;
+
+    // Update plain text
+    updatePlain();
 }
 
+/**
+ * 
+ * @param {*} count 
+ */
 function updateCharts(count) {
     // Set charts HTML
     divs = count;
@@ -128,7 +171,7 @@ function updateCharts(count) {
         document.getElementById("charts").innerHTML += `<div id="chart-${i}" class="column-chart"></div>
         <div class="chart-nav">
             <button id="left-${i}">Shift Left</button>
-            <p id="shift-${i}">0</p>
+            <p id="shift-${i}" class="shift-value">0</p>
             <button id="right-${i}">Shift Right</button>
         </div>`;
     }
@@ -202,5 +245,5 @@ function updateTable() {
         })
     });
 }
-updateTable(20);
+updateTable();
 document.getElementById("decipher-button").onclick = updateTable;

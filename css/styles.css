@@ -126,6 +126,18 @@ tr:hover {
     width: 2.5rem;
 }
 
-#shift-label {
+.shift-value {
     margin: 0 0.5rem;
+}
+
+/* Vigenere cipher styling */
+#keyword-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+#keyword {
+    font-weight: normal;
 }
