@@ -57,8 +57,8 @@ function drawChart(graphName, frequency) {
 }
 
 function updateCharts(count) {
+    // Set charts HTML
     document.getElementById("charts").innerHTML = "";
-
     for (let i = 0; i < count; i++) {
         document.getElementById("charts").innerHTML += `<div id="chart-${i}" class="column-chart"></div>
         <div class="chart-nav">
@@ -67,6 +67,11 @@ function updateCharts(count) {
             <button id="right-shift">Shift Right</button>
         </div>`;
     }
+
+    // Load frequency into chart data
+    const text = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, '');
+    const n = text.length;
+    const base = "a".charCodeAt(0);
 
     for (let i = 0; i < count; i++) {
         let frequency = [
@@ -98,7 +103,25 @@ function updateCharts(count) {
             ['y', 0, 0.02, 0],
             ['z', 0, 0.00074, 0]
         ];
-        drawChart("chart-" + i, frequency)
+
+        // Count letter frequency
+        let letterFrequency = {};
+        for (let j = 0; j < n / count; j++) {
+            if (j * count + i >= n) break;
+            let c = text[j * count + i].toLowerCase();
+            letterFrequency[c] = (letterFrequency[c] ?? 0) + 1;
+        }
+
+        // Update frequency column chart
+        const shift = 0;
+        for (let i = base; i < base + 26; i++) {
+            let freq = (letterFrequency[String.fromCharCode(i)] ?? 0) / (n / count);
+            let index = i - base + 1;
+            frequency[index][1] = freq;
+            index = (index + shift - 1) % 26 + 1;
+            frequency[index][3] = freq;
+        }
+        drawChart(`chart-${i}`, frequency)
     }
 }
 
