@@ -125,7 +125,7 @@ function decryptShift() {
     // Update column chart
     drawChart();
 }
-document.getElementById("decrypt-button").onclick = encryptShift;
+document.getElementById("decrypt-button").onclick = decryptShift;
 
 /**
  * Shift buttons for easier decryption.
