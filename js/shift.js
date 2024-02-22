@@ -67,7 +67,7 @@ function encryptShift() {
         if (/^[a-zA-Z]$/.test(c)) {
             letterFrequency[c] = (letterFrequency[c] ?? 0) + 1;
             let shifted = String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base);
-            shiftText += shifted;
+            shiftText += shifted.toUpperCase();
         } else shiftText += c;
     }
     document.getElementById("shift-text").value = shiftText;
