@@ -1,5 +1,6 @@
 // Load Google-Chart functions
 google.charts.load('current', {'packages':['bar']});
+let divs = 0;
 
 function findRepeats(str) {
     const repeats = {};
@@ -56,72 +57,87 @@ function drawChart(graphName, frequency) {
     chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
-function updateCharts(count) {
-    // Set charts HTML
-    document.getElementById("charts").innerHTML = "";
-    for (let i = 0; i < count; i++) {
-        document.getElementById("charts").innerHTML += `<div id="chart-${i}" class="column-chart"></div>
-        <div class="chart-nav">
-            <button id="left-shift">Shift Left</button>
-            <p id="shift-label">0</p>
-            <button id="right-shift">Shift Right</button>
-        </div>`;
-    }
-
+function updateChart(id) {
     // Load frequency into chart data
     const text = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, '');
     const n = text.length;
+
+    let frequency = [
+        ["Letter", "Plain", "Standard", "Cipher"],
+        ['a', 0, 0.082, 0],
+        ['b', 0, 0.015, 0],
+        ['c', 0, 0.028, 0],
+        ['d', 0, 0.043, 0],
+        ['e', 0, 0.127, 0],
+        ['f', 0, 0.022, 0],
+        ['g', 0, 0.02, 0],
+        ['h', 0, 0.061, 0],
+        ['i', 0, 0.07, 0],
+        ['j', 0, 0.0015, 0],
+        ['k', 0, 0.0077, 0],
+        ['l', 0, 0.04, 0],
+        ['m', 0, 0.024, 0],
+        ['n', 0, 0.067, 0],
+        ['o', 0, 0.075, 0],
+        ['p', 0, 0.019, 0],
+        ['q', 0, 0.00095, 0],
+        ['r', 0, 0.06, 0],
+        ['s', 0, 0.063, 0],
+        ['t', 0, 0.091, 0],
+        ['u', 0, 0.028, 0],
+        ['v', 0, 0.0098, 0],
+        ['w', 0, 0.024, 0],
+        ['x', 0, 0.0015, 0],
+        ['y', 0, 0.02, 0],
+        ['z', 0, 0.00074, 0]
+    ];
+
+    // Count letter frequency
+    let letterFrequency = {};
+    for (let j = 0; j < n / divs; j++) {
+        if (j * divs + id >= n) break;
+        let c = text[j * divs + id].toLowerCase();
+        letterFrequency[c] = (letterFrequency[c] ?? 0) + 1;
+    }
+
+    // Update frequency column chart
     const base = "a".charCodeAt(0);
+    let shift = parseInt(document.getElementById(`shift-${id}`).innerText);
+    for (let j = base; j < base + 26; j++) {
+        let freq = (letterFrequency[String.fromCharCode(j)]) / (n / divs);
+        let index = j - base + 1;
+        frequency[index][1] = freq;
+        index = (index + shift - 1) % 26 + 1;
+        frequency[index][3] = freq;
+    }
+    drawChart(`chart-${id}`, frequency);
+}
 
-    for (let i = 0; i < count; i++) {
-        let frequency = [
-            ["Letter", "Plain", "Standard", "Cipher"],
-            ['a', 0, 0.082, 0],
-            ['b', 0, 0.015, 0],
-            ['c', 0, 0.028, 0],
-            ['d', 0, 0.043, 0],
-            ['e', 0, 0.127, 0],
-            ['f', 0, 0.022, 0],
-            ['g', 0, 0.02, 0],
-            ['h', 0, 0.061, 0],
-            ['i', 0, 0.07, 0],
-            ['j', 0, 0.0015, 0],
-            ['k', 0, 0.0077, 0],
-            ['l', 0, 0.04, 0],
-            ['m', 0, 0.024, 0],
-            ['n', 0, 0.067, 0],
-            ['o', 0, 0.075, 0],
-            ['p', 0, 0.019, 0],
-            ['q', 0, 0.00095, 0],
-            ['r', 0, 0.06, 0],
-            ['s', 0, 0.063, 0],
-            ['t', 0, 0.091, 0],
-            ['u', 0, 0.028, 0],
-            ['v', 0, 0.0098, 0],
-            ['w', 0, 0.024, 0],
-            ['x', 0, 0.0015, 0],
-            ['y', 0, 0.02, 0],
-            ['z', 0, 0.00074, 0]
-        ];
+function updateCharts(count) {
+    // Set charts HTML
+    divs = count;
+    document.getElementById("charts").innerHTML = "";
+    for (let i = 0; i < divs; i++) {
+        document.getElementById("charts").innerHTML += `<div id="chart-${i}" class="column-chart"></div>
+        <div class="chart-nav">
+            <button id="left-${i}">Shift Left</button>
+            <p id="shift-${i}">0</p>
+            <button id="right-${i}">Shift Right</button>
+        </div>`;
+    }
 
-        // Count letter frequency
-        let letterFrequency = {};
-        for (let j = 0; j < n / count; j++) {
-            if (j * count + i >= n) break;
-            let c = text[j * count + i].toLowerCase();
-            letterFrequency[c] = (letterFrequency[c] ?? 0) + 1;
+    for (let i = 0; i < divs; i++) {
+        updateChart(i);
+        document.getElementById(`left-${i}`).onclick = () => {
+            const shift = document.getElementById(`shift-${i}`);
+            shift.innerHTML = (parseInt(shift.innerHTML) + 25) % 26;
+            updateChart(i);
         }
-
-        // Update frequency column chart
-        const shift = 0;
-        for (let i = base; i < base + 26; i++) {
-            let freq = (letterFrequency[String.fromCharCode(i)] ?? 0) / (n / count);
-            let index = i - base + 1;
-            frequency[index][1] = freq;
-            index = (index + shift - 1) % 26 + 1;
-            frequency[index][3] = freq;
+        document.getElementById(`right-${i}`).onclick = () => {
+            const shift = document.getElementById(`shift-${i}`);
+            shift.innerHTML = (parseInt(shift.innerHTML) + 1) % 26;
+            updateChart(i);
         }
-        drawChart(`chart-${i}`, frequency)
     }
 }
 
