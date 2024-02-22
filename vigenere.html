@@ -20,10 +20,10 @@
     <div id="body-container">
         <div class="text-container">
             <h3>Enter cipher text:</h3>
-            <textarea class="textbox" id="shift-text" placeholder="Enter text here..."></textarea>
+            <textarea class="textbox" id="cipher-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
                 <h3>Enter max factor:</h3>
-                <input id="decrypt-input" class="number-input" type="number" value="20">
+                <input id="decrypt-input" class="number-input" type="number" value="36">
                 <button id="decipher-button">Decrypt</button>
             </div>
         </div>
@@ -38,11 +38,15 @@
             </div>
         </div>
         <hr>
+        <div class="chart-container">
+            <h3>Charts:</h3>
+            <ul id="charts"></ul>
+        </div>
+        <hr>
         <div class="table-container">
             <h3>Repeats:</h3>
             <table id="repeat-table"></table>
         </div>
-        <hr>
     </div>
     
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
