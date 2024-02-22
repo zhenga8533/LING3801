@@ -111,6 +111,13 @@ function updateChart(id) {
         frequency[index][3] = freq;
     }
     drawChart(`chart-${id}`, frequency);
+
+    // Update key
+    let keyword = "";
+    for (let i = 0; i < divs; i++) {
+        keyword += String.fromCharCode((26 - document.getElementById(`shift-${i}`).innerText) % 26 + 65);
+    }
+    document.getElementById("key").innerText = keyword;
 }
 
 function updateCharts(count) {
