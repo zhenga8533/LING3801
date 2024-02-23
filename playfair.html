@@ -19,12 +19,12 @@
     <header id="header"></header>
 
     <div id="body-container">
-        <div class="text-container">
+        <div id="cipher" class="text-container">
             <h3>Enter cipher text:</h3>
             <textarea class="textbox" id="cipher-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
-                <button id="analyze-button">Analyze</button>
-                <button id="decrypt-button">Decrypt</button>
+                <a id="analyze-button" class="button" href="#frequency">Analyze</a>
+                <a id="decrypt-button" class="button" href="#plain">Decrypt</a>
             </div>
         </div>
         <hr>
@@ -33,7 +33,7 @@
             <table id="playfair-table">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th><button id="clear-table">Clear</button></th>
                         <th><button id="col-l0">&lt</button> Column 1 <button id="col-r0">&gt</button></th>
                         <th><button id="col-l1">&lt</button> Column 2 <button id="col-r1">&gt</button></th>
                         <th><button id="col-l2">&lt</button> Column 3 <button id="col-r2">&gt</button></th>
@@ -86,17 +86,17 @@
             </table>
         </div>
         <hr>
-        <div class="text-container">
+        <div id="plain" class="text-container">
             <h3>Plain text:</h3>
             <textarea class="textbox" id="plain-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
                 <h3>Enter keyword: </h3>
                 <input id="keyword-input" type="text" placeholder="Enter keyword...">
-                <button id="encrypt-button">Encrypt</button>
+                <a id="encrypt-button" class="button" href="#cipher">Encrypt</a>
             </div>
         </div>
         <hr>
-        <div class="text-container">
+        <div id="frequency" class="text-container">
             <h3>Bigram Frequency:</h3>
             <div id="bigram-container">
                 <table id="bigram"></table>

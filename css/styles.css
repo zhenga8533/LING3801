@@ -3,6 +3,7 @@
     padding: 0;
     margin: 0;
     font-family: monospace;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -16,6 +17,20 @@ body {
 
 hr {
     margin: 2rem;
+}
+
+/* Button styling */
+.button {
+    padding: 1px 6px;
+    border: 1px outset buttonborder;
+    border-radius: 3px;
+    color: buttontext;
+    background-color: buttonface;
+    text-decoration: none;
+}
+.button:hover {
+    background-color: #ccc;
+    cursor: pointer;
 }
 
 /* Nav bar styling */

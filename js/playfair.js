@@ -18,6 +18,19 @@ function updateTable() {
 }
 
 /**
+ * Clears table and HTML table.
+ */
+function clearTable() {
+    for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+            document.getElementById(`pf-${i * 5 + j}`).value = "";
+            table[i][j] = "-";
+        }
+    }
+}
+document.getElementById("clear-table").onclick = clearTable;
+
+/**
  * Shifts column of table up or down.
  * 
  * @param {Number} col 
@@ -139,8 +152,12 @@ function playfairEncrypt() {
 
         let encryptedDigraph = '';
 
+        // Not found
+        if (pos1 === null || pos2 === null) {
+            encryptedDigraph += "--";
+        }
         // Same row
-        if (pos1.row === pos2.row) {
+        else if (pos1.row === pos2.row) {
             encryptedDigraph += table[pos1.row][(pos1.col + 1) % table[pos1.row].length];
             encryptedDigraph += table[pos2.row][(pos2.col + 1) % table[pos2.row].length];
         }
@@ -240,7 +257,7 @@ function countBigramFrequency() {
     }
 
     // Update bigram table
-    let bigramTable = "<tr><th>Bigram</th><th>Count</th><th>Frequency (%)</th></tr>\n";
+    let bigramTable = "<tr><th>Cipher</th><th>Count</th><th>Frequency (%)</th></tr>\n";
     const sortedBigrams = Object.keys(bigramFreq).sort((a, b) => bigramFreq[b] - bigramFreq[a]);
 
     // Format each bigram and its frequency into the table
