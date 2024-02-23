@@ -58,7 +58,7 @@ function sortRepeats(repeats) {
  * Shift cipher text into plain text using provided shift values.
  */
 function updatePlain() {
-    const text = document.getElementById("cipher-text").value;
+    const cipherText = document.getElementById("cipher-text").value;
     const shifts = [];
     let plain = "";
 
@@ -70,7 +70,7 @@ function updatePlain() {
     // Shift plain text
     let i = 0;
     let base = "a".charCodeAt(0);
-    for (let c of text) {
+    for (let c of cipherText) {
         if (/^[a-zA-Z0-9]+$/.test(c)) {
             let shift = shifts[i++ % divs];
             plain += String.fromCharCode((c.toLowerCase().charCodeAt(0) - base + shift) % 26 + base);
@@ -185,6 +185,7 @@ function updateCharts(count) {
         </div>`;
     }
 
+    // Update each chart and their shift button listeners.
     for (let i = 0; i < divs; i++) {
         updateChart(i);
         document.getElementById(`left-${i}`).onclick = () => {
