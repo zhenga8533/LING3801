@@ -16,5 +16,83 @@
 </head>
 <body>
     <header id="header"></header>
+
+    <div id="body-container">
+        <div class="text-container">
+            <h3>Enter cipher text:</h3>
+            <textarea class="textbox" id="shift-text" placeholder="Enter text here..."></textarea>
+        </div>
+        <hr>
+        <div class="text-container">
+            <h3>Plain text:</h3>
+            <textarea class="textbox" id="plain-text" placeholder="Enter text here..."></textarea>
+            <div class="input-container">
+                <h3>Enter keyword: </h3>
+                <input id="keyword-input" type="text" value="placeholder">
+                <button id="encrypt-button">Encrypt</button>
+            </div>
+        </div>
+        <hr>
+        <div class="text-container">
+            <h3>Playfair Table:</h3>
+            <table id="playfair-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th><button>&lt</button> Column 1 <button>&gt</button></th>
+                        <th><button>&lt</button> Column 2 <button>&gt</button></th>
+                        <th><button>&lt</button> Column 3 <button>&gt</button></th>
+                        <th><button>&lt</button> Column 4 <button>&gt</button></th>
+                        <th><button>&lt</button> Column 5 <button>&gt</button></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th><button>&lt</button> Row 1 <button>&gt</button></th>
+                        <td><input type="text" id="pf-0" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-1" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-2" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-3" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-4" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                    </tr>
+                    <tr>
+                        <th><button>&lt</button> Row 2 <button>&gt</button></th>
+                        <td><input type="text" id="pf-5" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-6" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-7" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-8" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-9" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                    </tr>
+                    <tr>
+                        <th><button>&lt</button> Row 3 <button>&gt</button></th>
+                        <td><input type="text" id="pf-10" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-11" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-12" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-13" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-14" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                    </tr>
+                    <tr>
+                        <th><button>&lt</button> Row 4 <button>&gt</button></th>
+                        <td><input type="text" id="pf-15" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-16" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-17" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-18" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-19" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                    </tr>
+                    <tr>
+                        <th><button>&lt</button> Row 5 <button>&gt</button></th>
+                        <td><input type="text" id="pf-20" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-21" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-22" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-23" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                        <td><input type="text" id="pf-24" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="module" src="js/playfair.js"></script>
 </body>
 </html>

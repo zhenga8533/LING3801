@@ -106,9 +106,16 @@ table {
     margin-top: 0.5rem;
 }
 
-td, th {
+td {
     border: 1px solid #dddddd;
-    text-align: left;
+    text-align: center;
+    padding: 8px;
+}
+
+th {
+    background-color: #505050;
+    border: 1px solid #000000;
+    color: white;
     padding: 8px;
 }
 
@@ -140,4 +147,10 @@ tr:hover {
 
 #keyword {
     font-weight: normal;
+}
+
+/* Player cipher styling */
+#playfair-table tbody tr td input {
+    width: 2rem;
+    text-align: center;
 }
