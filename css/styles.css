@@ -1,0 +1,180 @@
+/* General styling */
+* {
+    padding: 0;
+    margin: 0;
+    font-family: monospace;
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.body-container {
+    display: flex;
+}
+
+hr {
+    margin: 2rem;
+}
+
+/* Button styling */
+.button {
+    padding: 1px 6px;
+    border: 1px outset buttonborder;
+    border-radius: 3px;
+    color: buttontext;
+    background-color: buttonface;
+    text-decoration: none;
+}
+.button:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+/* Nav bar styling */
+#nav {
+    list-style: none;
+    background: #505050;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.nav-item {
+    display: block;
+    padding: 1rem 25px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-size: 20px;
+}
+.nav-item:hover {
+    background: #999999;
+}
+
+/* Index styling */
+#index-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 90vh;
+    font-size: xx-large;
+}
+
+/* Textbox styling */
+.text-container {
+    width: calc(100% - 4rem);
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.textbox {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    height: 200px;
+    resize: vertical;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Chart styling */
+.chart-container {
+    width: calc(100% - 2rem);
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.chart-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.column-chart {
+    height: 560px;
+    padding-right: 1rem;
+}
+
+/* Table styling */
+.table-container {
+    width: calc(100% - 4rem);
+    margin: 1rem;
+    padding: 1rem;
+    overflow-x: scroll;
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+th {
+    background-color: #505050;
+    border: 1px solid #000000;
+    color: white;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #dddddd;
+}
+
+/* Shift cipher styling */
+.number-input {
+    padding: 0 2px;
+    width: 2.5rem;
+}
+
+.shift-value {
+    margin: 0 0.5rem;
+}
+
+/* Vigenere cipher styling */
+#keyword-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+#keyword {
+    font-weight: normal;
+}
+
+/* Player cipher styling */
+#playfair-table tbody tr td input {
+    width: 2rem;
+    text-align: center;
+}
+
+#bigram-container {
+    display: flex;
+    gap: 2rem;
+}
+
+#bigram, #bigram-freq {
+    display: block;
+}
