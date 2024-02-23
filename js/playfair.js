@@ -113,15 +113,15 @@ function findChar(char) {
 function playfairEncrypt() {
     fixTable();
 
-    // Preprocess plaintext: replace non-alphabetic characters with 'X' and convert to uppercase
-    let plaintext = document.getElementById("plain-text").value.replace(/[^a-zA-Z]/g, "X").toUpperCase();
+    // Preprocess plainText: replace non-alphabetic characters with 'X' and convert to uppercase
+    let plainText = document.getElementById("plain-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
     
-    // Split plaintext into digraphs
+    // Split plainText into digraphs
     const digraphs = [];
-    for (let i = 0; i < plaintext.length; i += 2) {
-        let digraph = plaintext[i];
-        if (i + 1 < plaintext.length && plaintext[i] !== plaintext[i + 1]) {
-            digraph += plaintext[i + 1];
+    for (let i = 0; i < plainText.length; i += 2) {
+        let digraph = plainText[i];
+        if (i + 1 < plainText.length && plainText[i] !== plainText[i + 1]) {
+            digraph += plainText[i + 1];
         } else {
             digraph += 'X';
             i--;
@@ -161,3 +161,67 @@ function playfairEncrypt() {
     document.getElementById("cipher-text").value = cipherText;
 }
 document.getElementById("encrypt-button").onclick = playfairEncrypt;
+
+
+// Decryption functions
+function setTable() {
+    for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+            let c = document.getElementById(`pf-${i * 5 + j}`).value;
+            table[i][j] = c === "" ? "-" : c;
+        }
+    }
+}
+
+function findDigraph(char1, char2) {
+    const pos1 = findChar(char1);
+    const pos2 = findChar(char2);
+
+    // If either position is not found, return '--'
+    if (!pos1 || !pos2) {
+        return ['-', '-'];
+    }
+
+    // Same row
+    if (pos1.row === pos2.row) {
+        return [
+            table[pos1.row][(pos1.col - 1 + table[pos1.row].length) % table[pos1.row].length],
+            table[pos2.row][(pos2.col - 1 + table[pos2.row].length) % table[pos2.row].length]
+        ];
+    }
+    // Same column
+    else if (pos1.col === pos2.col) {
+        return [
+            table[(pos1.row - 1 + table.length) % table.length][pos1.col],
+            table[(pos2.row - 1 + table.length) % table.length][pos2.col]
+        ];
+    }
+    // Rectangle rule
+    else {
+        return [
+            table[pos1.row][pos2.col],
+            table[pos2.row][pos1.col]
+        ];
+    }
+}
+
+function playfairDecrypt() {
+    setTable();
+    const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
+
+    // Split cipherText into digraphs
+    const digraphs = [];
+    for (let i = 0; i < cipherText.length; i += 2) {
+        digraphs.push([cipherText[i], cipherText[i + 1]]);
+    }
+
+    // Decrypt each digraph
+    let plainText = '';
+    digraphs.forEach(digraph => {
+        const decryptedDigraph = findDigraph(digraph[0], digraph[1]);
+        plainText += decryptedDigraph[0].toLowerCase() + decryptedDigraph[1].toLowerCase() + " ";
+    });
+
+    document.getElementById("plain-text").value = plainText;
+}
+document.getElementById("decrypt-button").onclick = playfairDecrypt;
