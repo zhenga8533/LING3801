@@ -255,3 +255,30 @@ function updateTable() {
 }
 updateTable();
 document.getElementById("decipher-button").onclick = updateTable;
+
+/**
+ * Encrypts plain text using inputted keyword.
+ */
+function encryptVigenere() {
+    const keyword = document.getElementById("keyword-input").value.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    const plainText = document.getElementById("plain-text").value.toLowerCase();
+    let base = "a".charCodeAt(0);
+
+    // Set shifts based on keyword
+    const shifts = [];
+    for (let c of keyword) {
+        shifts.push(c.charCodeAt(0) - base);
+    }
+
+    // Encode into cipher text
+    let i = 0;
+    let cipherText = "";
+    for (let c of plainText) {
+        if (/^[a-zA-Z0-9]+$/.test(c)) {
+            let shift = shifts[i++ % keyword.length];
+            cipherText += String.fromCharCode((c.toLowerCase().charCodeAt(0) - base + shift) % 26 + base).toUpperCase();
+        } else cipherText += c;
+    }
+    document.getElementById("cipher-text").value = cipherText;
+}
+document.getElementById("encrypt-button").onclick = encryptVigenere;
