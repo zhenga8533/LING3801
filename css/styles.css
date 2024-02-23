@@ -154,3 +154,12 @@ tr:hover {
     width: 2rem;
     text-align: center;
 }
+
+#bigram-container {
+    display: flex;
+    gap: 2rem;
+}
+
+#bigram, #bigram-freq {
+    display: block;
+}

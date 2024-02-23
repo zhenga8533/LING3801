@@ -225,3 +225,30 @@ function playfairDecrypt() {
     document.getElementById("plain-text").value = plainText;
 }
 document.getElementById("decrypt-button").onclick = playfairDecrypt;
+
+
+// Bigram frequency functions
+function countBigramFrequency() {
+    const bigramFreq = {};
+    const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
+    const n = cipherText.length;
+
+    // Count the frequency of each bigram
+    for (let i = 0; i < n - 1; i += 2) {
+        const bigram = cipherText.slice(i, i + 2);
+        bigramFreq[bigram] = (bigramFreq[bigram] ?? 0) + 1;
+    }
+
+    // Update bigram table
+    let bigramTable = "<tr><th>Bigram</th><th>Count</th><th>Frequency (%)</th></tr>\n";
+    const sortedBigrams = Object.keys(bigramFreq).sort((a, b) => bigramFreq[b] - bigramFreq[a]);
+
+    // Format each bigram and its frequency into the table
+    sortedBigrams.forEach(bigram => {
+        const freq = bigramFreq[bigram];
+        bigramTable += `<tr><td>${bigram}</td><td>${freq}</td><td>${Math.round(freq / n * 20_000) / 100}%</td></tr>\n`;
+    });
+    document.getElementById("bigram-freq").innerHTML = bigramTable;
+}
+document.getElementById("analyze-button").onclick = countBigramFrequency;
+countBigramFrequency();

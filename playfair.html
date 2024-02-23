@@ -11,6 +11,7 @@
     <script> 
         $(function(){
             $("#header").load("sections/header.html"); 
+            $("#bigram").load("sections/bigram.html"); 
         });
     </script>
 </head>
@@ -22,7 +23,7 @@
             <h3>Enter cipher text:</h3>
             <textarea class="textbox" id="cipher-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
-                <h3>Table set? </h3>
+                <button id="analyze-button">Analyze</button>
                 <button id="decrypt-button">Decrypt</button>
             </div>
         </div>
@@ -97,6 +98,10 @@
         <hr>
         <div class="text-container">
             <h3>Bigram Frequency:</h3>
+            <div id="bigram-container">
+                <table id="bigram"></table>
+                <table id="bigram-freq"></table>
+            </div>
         </div>
     </div>
     
