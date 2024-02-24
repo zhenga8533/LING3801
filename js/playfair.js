@@ -20,12 +20,11 @@ for (let i = 0; i < 5; i++) {
 
             // Verify table is valid
             const id = tableInput.id;
-            const index = id.charAt(id.length - 1);
+            const index = parseInt(id.split("-")[1]);
             for (let i = 0; i < 5; i++) {
                 for (let j = 0; j < 5; j++) {
                     let k = i * 5 + j;
-                    let element = document.getElementById(`pf-${i * 5 + j}`);
-                    if (k != index && tableInput.value == element.value) {
+                    if (k != index && tableInput.value == document.getElementById(`pf-${k}`).value) {
                         table[i][j] = "";
                     }
                 }
@@ -42,8 +41,7 @@ for (let i = 0; i < 5; i++) {
 function setTable() {
     for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
-            let c = document.getElementById(`pf-${i * 5 + j}`).value;
-            table[i][j] = c;
+            table[i][j] = document.getElementById(`pf-${i * 5 + j}`).value;
         }
     }
 }
