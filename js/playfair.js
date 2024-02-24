@@ -25,7 +25,7 @@ for (let i = 0; i < 5; i++) {
                 for (let j = 0; j < 5; j++) {
                     let k = i * 5 + j;
                     if (k != index && tableInput.value == document.getElementById(`pf-${k}`).value) {
-                        table[i][j] = "";
+                        table[i][j] = "-";
                     }
                 }
             }
@@ -41,7 +41,8 @@ for (let i = 0; i < 5; i++) {
 function setTable() {
     for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
-            table[i][j] = document.getElementById(`pf-${i * 5 + j}`).value;
+            let c = document.getElementById(`pf-${i * 5 + j}`).value;
+            table[i][j] = c === "" ? "-" : c;
         }
     }
 }
@@ -52,7 +53,8 @@ function setTable() {
 function updateTable() {
     for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
-            document.getElementById(`pf-${i * 5 + j}`).value = table[i][j];
+            let c = table[i][j];
+            document.getElementById(`pf-${i * 5 + j}`).value = c === "-" ? "" : c;
         }
     }
 }
@@ -64,7 +66,7 @@ function clearTable() {
     for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
             document.getElementById(`pf-${i * 5 + j}`).value = "";
-            table[i][j] = "";
+            table[i][j] = "-";
         }
     }
 }
