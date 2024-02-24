@@ -222,14 +222,14 @@ document.getElementById("rotate-ccw").onclick = () => { rotateTable(-1) }
 
 // Encryption functions
 function fixTable() {
-    const keyword = document.getElementById("keyword-input").value.replace(/[^a-zA-Z]/g, "");
+    const key = document.getElementById("key-input").value.replace(/[^a-zA-Z]/g, "");
 
-    // Construct the initial table with the keyword
-    let keywordChars = [];
-    for (let i = 0; i < keyword.length; i++) {
-        const char = keyword[i].toUpperCase();
-        if (!keywordChars.includes(char) && char !== 'J') {
-            keywordChars.push(char);
+    // Construct the initial table with the key
+    let keyChars = [];
+    for (let i = 0; i < key.length; i++) {
+        const char = key[i].toUpperCase();
+        if (!keyChars.includes(char) && char !== 'J') {
+            keyChars.push(char);
         }
     }
 
@@ -237,8 +237,8 @@ function fixTable() {
     const alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ';
     for (let i = 0; i < alphabet.length; i++) {
         const char = alphabet[i];
-        if (!keywordChars.includes(char)) {
-            keywordChars.push(char);
+        if (!keyChars.includes(char)) {
+            keyChars.push(char);
         }
     }
 
@@ -247,7 +247,7 @@ function fixTable() {
     for (let i = 0; i < 5; i++) {
         const row = [];
         for (let j = 0; j < 5; j++) {
-            row.push(keywordChars[i * 5 + j]);
+            row.push(keyChars[i * 5 + j]);
         }
         table.push(row);
     }
