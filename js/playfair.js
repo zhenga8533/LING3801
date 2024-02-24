@@ -221,8 +221,9 @@ document.getElementById("rotate-ccw").onclick = () => { rotateTable(-1) }
 
 
 // Encryption functions
-function fixTable() {
-    const key = document.getElementById("key-input").value.replace(/[^a-zA-Z]/g, "");
+function fixTable(keyType) {
+    const key = document.getElementById(keyType).value.replace(/[^a-zA-Z]/g, "");
+    if (key === "") return;
 
     // Construct the initial table with the key
     let keyChars = [];
@@ -266,7 +267,7 @@ function findChar(char) {
 }
 
 function playfairEncrypt() {
-    fixTable();
+    fixTable("encrypt-key");
 
     // Preprocess plainText: replace non-alphabetic characters with 'X' and convert to uppercase
     let plainText = document.getElementById("plain-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
@@ -356,6 +357,7 @@ function findDigraph(char1, char2) {
 }
 
 function playfairDecrypt() {
+    fixTable("decrypt-key");
     setTable();
     const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
 
