@@ -18,13 +18,13 @@
     <header id="header"></header>
 
     <div id="body-container">
-        <div class="text-container">
+        <div id="cipher" class="text-container">
             <h3>Enter cipher text:</h3>
             <textarea class="textbox" id="cipher-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
                 <h3>Enter max factor:</h3>
-                <input id="decrypt-input" class="number-input" type="number" value="36">
-                <button id="decipher-button">Decrypt</button>
+                <input id="decrypt-input" class="number-input" type="number" value="30">
+                <a id="decrypt-button" class="button" href="#factor">Decrypt</a>
             </div>
         </div>
         <hr>
@@ -34,7 +34,7 @@
             <div class="input-container">
                 <h3>Enter key:</h3>
                 <input id="keyword-input" type="text" value="placeholder">
-                <button id="encrypt-button">Encrypt</button>
+                <a id="encrypt-button" class="button" href="#cipher">Encrypt</a>
             </div>
         </div>
         <hr>
@@ -45,7 +45,7 @@
             </div>
         </div>
         <hr>
-        <div class="table-container">
+        <div class="table-container" id="factor">
             <h3>Repeats:</h3>
             <table id="repeat-table"></table>
         </div>

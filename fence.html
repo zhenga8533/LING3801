@@ -18,13 +18,13 @@
     <header id="header"></header>
 
     <div id="body-container">
-        <div class="text-container">
+        <div class="text-container" id="decrypt">
             <h3>Enter cipher text:</h3>
             <textarea class="textbox" id="cipher-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
                 <h3>Enter fence height (+ for bottom start, - for top start):</h3>
                 <input id="decrypt-input" class="number-input" type="number" value="0">
-                <button id="decipher-button">Decrypt</button>
+                <a id="decipher-button" class="button" href="#encrypt">Decrypt</a>
             </div>
         </div>
         <hr>
@@ -33,13 +33,13 @@
             <table id="fence-table"></table>
         </div>
         <hr>
-        <div class="text-container">
+        <div class="text-container" id="encrypt">
             <h3>Enter plain text:</h3>
             <textarea class="textbox" id="plain-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
                 <h3>Enter fence height (+ for bottom start, - for top start):</h3>
                 <input id="encrypt-input" class="number-input" type="number" value="0">
-                <button id="encrypt-button">Encrypt</button>
+                <a id="encrypt-button" class="button" href="#header">Encrypt</a>
             </div>
         </div>
     </div>

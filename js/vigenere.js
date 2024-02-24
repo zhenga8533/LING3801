@@ -179,9 +179,9 @@ function updateCharts(count) {
     for (let i = 0; i < divs; i++) {
         document.getElementById("charts").innerHTML += `<div id="chart-${i}" class="column-chart"></div>
         <div class="chart-nav">
-            <button id="left-${i}">Shift Left</button>
+            <button id="left-${i}" class="button">Shift Left</button>
             <p id="shift-${i}" class="shift-value">0</p>
-            <button id="right-${i}">Shift Right</button>
+            <button id="right-${i}" class="button">Shift Right</button>
         </div>`;
     }
 
@@ -210,12 +210,12 @@ function updateTable() {
 
     // Update table HTML
     const length = document.getElementById("decrypt-input").value;
-    const table = document.getElementById('repeat-table');
+    const table = document.getElementById("repeat-table");
 
     // Update table header
     let header = "<tr><th>Sequence</th><th>Freq</th>";
     for (let i = 0; i < length - 1; i++) {
-        header += `<th><button class="update-btn">${i + 2}</button></th>`;
+        header += `<th><a class="update-btn button" href="#charts">${i + 2}</a></th>`;
     }
     table.innerHTML = header + "</tr>";
 
@@ -255,7 +255,7 @@ function updateTable() {
     });
 }
 updateTable();
-document.getElementById("decipher-button").onclick = updateTable;
+document.getElementById("decrypt-button").onclick = updateTable;
 
 /**
  * Encrypts plain text using inputted keyword.
