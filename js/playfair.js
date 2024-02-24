@@ -31,6 +31,63 @@ function clearTable() {
 document.getElementById("clear-table").onclick = clearTable;
 
 /**
+ * 
+ * @param {Number} direction 
+ * @returns 
+ */
+function shiftRows(direction) {
+    const numRows = table.length;
+    
+    if (direction === 1) {
+        const lastRow = table[numRows - 1];
+        for (let i = numRows - 1; i > 0; i--) {
+            table[i] = table[i - 1];
+        }
+        table[0] = lastRow;
+    } else if (direction === -1) {
+        const firstRow = table[0];
+        for (let i = 0; i < numRows - 1; i++) {
+            table[i] = table[i + 1];
+        }
+        table[numRows - 1] = firstRow;
+    }
+    updateTable();
+}
+document.getElementById("row-up").onclick = () => { shiftRows(-1) }
+document.getElementById("row-down").onclick = () => { shiftRows(1) }
+
+/**
+ * 
+ * @param {Number} direction 
+ * @returns 
+ */
+function shiftColumns(direction) {
+    const numRows = table.length;
+    const numCols = table[0].length;
+    
+    if (direction === 1) {
+        for (let i = 0; i < numRows; i++) {
+            const lastElement = table[i][numCols - 1];
+            for (let j = numCols - 1; j > 0; j--) {
+                table[i][j] = table[i][j - 1];
+            }
+            table[i][0] = lastElement;
+        }
+    } else if (direction === -1) {
+        for (let i = 0; i < numRows; i++) {
+            const firstElement = table[i][0];
+            for (let j = 0; j < numCols - 1; j++) {
+                table[i][j] = table[i][j + 1];
+            }
+            table[i][numCols - 1] = firstElement;
+        }
+    }
+    updateTable();
+}
+document.getElementById("col-left").onclick = () => { shiftColumns(-1) }
+document.getElementById("col-right").onclick = () => { shiftColumns(1) }
+
+/**
  * Shifts column of table up or down.
  * 
  * @param {Number} col 

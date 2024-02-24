@@ -142,6 +142,11 @@ tr:hover {
     background-color: #dddddd;
 }
 
+.special-control {
+    background-color: white;
+    border: 0px;
+}
+
 /* Shift cipher styling */
 .number-input {
     padding: 0 2px;

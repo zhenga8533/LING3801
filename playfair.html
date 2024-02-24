@@ -28,6 +28,16 @@
             </div>
         </div>
         <hr>
+        <div id="plain" class="text-container">
+            <h3>Plain text:</h3>
+            <textarea class="textbox" id="plain-text" placeholder="Enter text here..."></textarea>
+            <div class="input-container">
+                <h3>Enter keyword: </h3>
+                <input id="keyword-input" type="text" placeholder="Enter keyword...">
+                <a id="encrypt-button" class="button" href="#cipher">Encrypt</a>
+            </div>
+        </div>
+        <hr>
         <div class="text-container">
             <h3>Playfair Table:</h3>
             <table id="playfair-table">
@@ -57,6 +67,7 @@
                         <td><input type="text" id="pf-7" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)" value="H"></td>
                         <td><input type="text" id="pf-8" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)" value="I"></td>
                         <td><input type="text" id="pf-9" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)" value="K"></td>
+                        <td class="special-control"><button id="row-up">↑</button></td>
                     </tr>
                     <tr>
                         <th><button id="row-l2">&lt</button> Row 3 <button id="row-r2">&gt</button></th>
@@ -73,6 +84,7 @@
                         <td><input type="text" id="pf-17" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)" value="S"></td>
                         <td><input type="text" id="pf-18" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)" value="T"></td>
                         <td><input type="text" id="pf-19" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)" value="U"></td>
+                        <td class="special-control"><button id="row-down">↓</button></td>
                     </tr>
                     <tr>
                         <th><button id="row-l4">&lt</button> Row 5 <button id="row-r4">&gt</button></th>
@@ -82,18 +94,15 @@
                         <td><input type="text" id="pf-23" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)" value="Y"></td>
                         <td><input type="text" id="pf-24" maxlength="1" onkeydown="return /[a-z]/i.test(event.key)" value="Z"></td>
                     </tr>
+                    <tr>
+                        <td class="special-control"></td>
+                        <td class="special-control"></td>
+                        <td class="special-control"><button id="col-left">←</button></td>
+                        <td class="special-control"></td>
+                        <td class="special-control"><button id="col-right">→</button></td>
+                    </tr>
                 </tbody>
             </table>
-        </div>
-        <hr>
-        <div id="plain" class="text-container">
-            <h3>Plain text:</h3>
-            <textarea class="textbox" id="plain-text" placeholder="Enter text here..."></textarea>
-            <div class="input-container">
-                <h3>Enter keyword: </h3>
-                <input id="keyword-input" type="text" placeholder="Enter keyword...">
-                <a id="encrypt-button" class="button" href="#cipher">Encrypt</a>
-            </div>
         </div>
         <hr>
         <div id="frequency" class="text-container">
