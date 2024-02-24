@@ -1,10 +1,52 @@
-const table = [
+let table = [
     ["A", "B", "C", "D", "E"],
     ["F", "G", "H", "I", "K"],
     ["L", "M", "N", "O", "P"],
     ["Q", "R", "S", "T", "U"],
     ["V", "W", "X", "Y", "Z"]
 ];
+let lastSave = table.map(row => row.slice());
+
+/**
+ * Set correct events for all table inputs. Verifies correct inputs and table.
+ */
+for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+        let tableInput = document.getElementById(`pf-${i * 5 + j}`);
+        tableInput.onkeydown = () => /[a-z]/i.test(event.key);
+        tableInput.addEventListener("input", () => {
+            tableInput.value = tableInput.value.toUpperCase();
+            setTable();
+
+            // Verify table is valid
+            const id = tableInput.id;
+            const index = id.charAt(id.length - 1);
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 5; j++) {
+                    let k = i * 5 + j;
+                    let element = document.getElementById(`pf-${i * 5 + j}`);
+                    if (k != index && tableInput.value == element.value) {
+                        table[i][j] = "";
+                    }
+                }
+            }
+
+            updateTable();
+        });
+    }
+}
+
+/**
+ * 
+ */
+function setTable() {
+    for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+            let c = document.getElementById(`pf-${i * 5 + j}`).value;
+            table[i][j] = c;
+        }
+    }
+}
 
 /**
  * Update table HTML 
@@ -24,11 +66,23 @@ function clearTable() {
     for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
             document.getElementById(`pf-${i * 5 + j}`).value = "";
-            table[i][j] = "-";
+            table[i][j] = "";
         }
     }
 }
 document.getElementById("clear-table").onclick = clearTable;
+
+/**
+ * Set load/save buttons
+ */
+document.getElementById("save-btn").onclick = () => {
+    setTable();
+    lastSave = table.map(row => row.slice());
+}
+document.getElementById("load-btn").onclick = () => {
+    table = lastSave.map(row => row.slice());
+    updateTable();
+}
 
 /**
  * 
@@ -134,6 +188,37 @@ for (let i = 0; i < 5; i++) {
     document.getElementById(`col-r${i}`).onclick = () => { shiftCol(i, -1) }
 }
 
+/**
+ * 
+ * @param {*} direction 
+ */
+function rotateTable(direction) {
+    const n = table.length;
+    for (let layer = 0; layer < n / 2; layer++) {
+        const first = layer;
+        const last = n - 1 - layer;
+        for (let i = first; i < last; i++) {
+            const offset = i - first;
+            const top = table[first][i];
+
+            if (direction === 1) { // Clockwise rotation
+                table[first][i] = table[last - offset][first];
+                table[last - offset][first] = table[last][last - offset];
+                table[last][last - offset] = table[i][last];
+                table[i][last] = top;
+            } else if (direction === -1) { // Counterclockwise rotation
+                table[first][i] = table[i][last];
+                table[i][last] = table[last][last - offset];
+                table[last][last - offset] = table[last - offset][first];
+                table[last - offset][first] = top;
+            }
+        }
+    }
+    updateTable();
+}
+document.getElementById("rotate-cw").onclick = () => { rotateTable(1) }
+document.getElementById("rotate-ccw").onclick = () => { rotateTable(-1) }
+
 
 // Encryption functions
 function fixTable() {
@@ -238,15 +323,6 @@ document.getElementById("encrypt-button").onclick = playfairEncrypt;
 
 
 // Decryption functions
-function setTable() {
-    for (let i = 0; i < 5; i++) {
-        for (let j = 0; j < 5; j++) {
-            let c = document.getElementById(`pf-${i * 5 + j}`).value;
-            table[i][j] = c === "" ? "-" : c;
-        }
-    }
-}
-
 function findDigraph(char1, char2) {
     const pos1 = findChar(char1);
     const pos2 = findChar(char2);
@@ -316,13 +392,28 @@ function countBigramFrequency() {
     // Update bigram table
     let bigramTable = "<tr><th>Cipher</th><th>Count</th><th>Frequency (%)</th></tr>\n";
     const sortedBigrams = Object.keys(bigramFreq).sort((a, b) => bigramFreq[b] - bigramFreq[a]);
+    const processedBigrams = {}; // To keep track of processed bigrams
 
     // Format each bigram and its frequency into the table
     sortedBigrams.forEach(bigram => {
-        const freq = bigramFreq[bigram];
-        bigramTable += `<tr><td>${bigram}</td><td>${freq}</td><td>${Math.round(freq / n * 20_000) / 100}%</td></tr>\n`;
+        if (!processedBigrams[bigram]) {
+            const freq = bigramFreq[bigram];
+            const oppositeBigram = bigram[1] + bigram[0]; // Create the opposite bigram
+            const oppositeFreq = bigramFreq[oppositeBigram] || 0; // Frequency of the opposite bigram
+
+            // Add row for the bigram
+            bigramTable += `<tr><td>${bigram}</td><td>${freq}</td><td>${Math.round(freq / n * 20_000) / 100}%</td></tr>\n`;
+            processedBigrams[bigram] = true;
+
+            // Add row for the opposite bigram if it exists and mark it as processed
+            if (oppositeFreq > 0) {
+                bigramTable += `<tr><td>${oppositeBigram}</td><td>${oppositeFreq}</td><td>${Math.round(oppositeFreq / n * 20_000) / 100}%</td></tr>\n`;
+                processedBigrams[oppositeBigram] = true;
+            }
+        }
     });
     document.getElementById("bigram-freq").innerHTML = bigramTable;
 }
+
 document.getElementById("analyze-button").onclick = countBigramFrequency;
 countBigramFrequency();
