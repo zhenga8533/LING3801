@@ -11,10 +11,128 @@
     <script> 
         $(() => {
             $("#header").load("sections/header.html"); 
+            $("#bigram").load("sections/bigram.html"); 
         });
     </script>
 </head>
 <body>
     <header id="header"></header>
+
+    <div id="body-container">
+        <!-- Cipher text container -->
+        <div class="text-container">
+            <h3>Enter cipher text:</h3>
+            <textarea class="textbox" id="cipher-text" placeholder="Enter text here..."></textarea>
+            <div class="input-container">
+                <h3>Enter key: </h3>
+                <input id="decrypt-key" type="text" placeholder="or leave empty...">
+                <a id="decrypt-button" class="button" href="#plain">Decrypt</a>
+            </div>
+            <div class="input-container">
+                <h3>Need more info?</h3>
+                <a id="analyze-button" class="button" href="#frequency">Analyze</a>
+            </div>
+        </div>
+        <hr> <!-- Plain text container -->
+        <div id="plain" class="text-container">
+            <h3>Plain text:</h3>
+            <textarea class="textbox" id="plain-text" placeholder="Enter text here..."></textarea>
+            <div class="input-container">
+                <h3>Enter key: </h3>
+                <input id="encrypt-key" type="text" placeholder="or leave empty...">
+                <a id="encrypt-button" class="button" href="#header">Encrypt</a>
+            </div>
+        </div>
+        <hr> <!-- Frequency google charts -->
+        <div class="chart-container">
+            <div id="columnchart" class="column-chart"></div>
+        </div>
+        <hr> <!-- Frequency google charts -->
+        <div class="text-container">
+            <h3>Playfair Table:</h3>
+            <table id="ma-table">
+                <thead>
+                    <tr>
+                        <th>a</th>
+                        <th>b</th>
+                        <th>c</th>
+                        <th>d</th>
+                        <th>e</th>
+                        <th>f</th>
+                        <th>g</th>
+                        <th>h</th>
+                        <th>i</th>
+                        <th>j</th>
+                        <th>k</th>
+                        <th>l</th>
+                        <th>m</th>
+                        <th>n</th>
+                        <th>o</th>
+                        <th>p</th>
+                        <th>q</th>
+                        <th>r</th>
+                        <th>s</th>
+                        <th>t</th>
+                        <th>u</th>
+                        <th>v</th>
+                        <th>w</th>
+                        <th>x</th>
+                        <th>y</th>
+                        <th>z</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" id="pf-0" maxlength="1" value="A"></td>
+                        <td><input type="text" id="pf-1" maxlength="1" value="B"></td>
+                        <td><input type="text" id="pf-2" maxlength="1" value="C"></td>
+                        <td><input type="text" id="pf-3" maxlength="1" value="D"></td>
+                        <td><input type="text" id="pf-4" maxlength="1" value="E"></td>
+                        <td><input type="text" id="pf-5" maxlength="1" value="F"></td>
+                        <td><input type="text" id="pf-6" maxlength="1" value="G"></td>
+                        <td><input type="text" id="pf-7" maxlength="1" value="H"></td>
+                        <td><input type="text" id="pf-8" maxlength="1" value="I"></td>
+                        <td><input type="text" id="pf-8" maxlength="1" value="J"></td>
+                        <td><input type="text" id="pf-9" maxlength="1" value="K"></td>
+                        <td><input type="text" id="pf-10" maxlength="1" value="L"></td>
+                        <td><input type="text" id="pf-11" maxlength="1" value="M"></td>
+                        <td><input type="text" id="pf-12" maxlength="1" value="N"></td>
+                        <td><input type="text" id="pf-13" maxlength="1" value="O"></td>
+                        <td><input type="text" id="pf-14" maxlength="1" value="P"></td>
+                        <td><input type="text" id="pf-15" maxlength="1" value="Q"></td>
+                        <td><input type="text" id="pf-16" maxlength="1" value="R"></td>
+                        <td><input type="text" id="pf-17" maxlength="1" value="S"></td>
+                        <td><input type="text" id="pf-18" maxlength="1" value="T"></td>
+                        <td><input type="text" id="pf-19" maxlength="1" value="U"></td>
+                        <td><input type="text" id="pf-20" maxlength="1" value="V"></td>
+                        <td><input type="text" id="pf-21" maxlength="1" value="W"></td>
+                        <td><input type="text" id="pf-22" maxlength="1" value="X"></td>
+                        <td><input type="text" id="pf-23" maxlength="1" value="Y"></td>
+                        <td><input type="text" id="pf-24" maxlength="1" value="Z"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr> <!-- Frequency analysis tables -->
+        <div id="frequency" class="frequency-wrapper">
+            <div id="frequency-container">
+                <h3>Bigram Frequency:</h3>
+                <div id="bigram-container">
+                    <table id="bigram"></table>
+                    <table id="bigram-freq"></table>
+                </div>
+            </div>
+            <div id="frequency-container">
+                <h3>Trigram Frequency:</h3>
+                <div id="bigram-container">
+                    <table id="bigram"></table>
+                    <table id="bigram-freq"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="module" src="js/ma.js"></script>
 </body>
 </html>

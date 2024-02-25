@@ -166,6 +166,20 @@ tr:hover {
     margin: 0 0.5rem;
 }
 
+/* MA cipher styling */
+.frequency-wrapper {
+    display: flex;
+    width: calc(100% - 4rem);
+    gap: 1rem;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+#ma-table tbody tr td input {
+    width: 1rem;
+    text-align: center;
+}
+
 /* Vigenere cipher styling */
 #keyword-container {
     display: flex;
