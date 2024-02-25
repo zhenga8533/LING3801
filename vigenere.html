@@ -22,27 +22,35 @@
             <h3>Enter cipher text:</h3>
             <textarea class="textbox" id="cipher-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
+                <h3>Enter key:</h3>
+                <input id="decrypt-key" type="text" placeholder="key required...">
+                <a id="encrypt-button" class="button" href="#plain">Encrypt</a>
+            </div>
+            <div class="input-container">
                 <h3>Enter max factor:</h3>
-                <input id="decrypt-input" class="number-input" type="number" value="30">
-                <a id="decrypt-button" class="button" href="#factor">Decrypt</a>
+                <input id="factor-input" class="number-input" type="number" value="30">
+                <a id="analyze-button" class="button" href="#factor">Analyze</a>
             </div>
         </div>
         <hr>
-        <div class="text-container">
+        <div id="plain" class="text-container">
             <h3>Enter plain text:</h3>
             <textarea class="textbox" id="plain-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
                 <h3>Enter key:</h3>
-                <input id="keyword-input" type="text" value="placeholder">
+                <input id="encrypt-key" type="text" placeholder="key required...">
                 <a id="encrypt-button" class="button" href="#cipher">Encrypt</a>
             </div>
         </div>
         <hr>
+        <div class="text-container">
+            <h3>Key: <span id="key"></span></h3>
+            <table id="key-table"></table>
+        </div>
+        <hr>
         <div class="chart-container">
+            <h3>Frequency Charts:</h3>
             <ul id="charts"></ul>
-            <div id="keyword-container">
-                <h1>Keyword: <span id="keyword"></span></h1>
-            </div>
         </div>
         <hr>
         <div class="table-container" id="factor">
@@ -52,6 +60,7 @@
     </div>
     
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="module" src="js/app.js"></script>
     <script type="module" src="js/vigenere.js"></script>
 </body>
 </html>
