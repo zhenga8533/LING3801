@@ -46,6 +46,15 @@ function drawChart() {
     chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
+function reverseTable(dictionary) {
+    const reversed = {};
+    for (const key in dictionary) {
+        const value = dictionary[key];
+        reversed[value] = key;
+    }
+    return reversed;
+}
+
 function setTable(key) {
     if (!key.length) return;
     
@@ -85,12 +94,15 @@ function encryptMA() {
 
     // Convert plain into cipher based on table
     let cipherText = "";
-    for (let c of plainText) {
-        cipherText += table[c] ?? "-";
+    for (let i in plainText) {
+        let c = table[plainText[i]];
+        cipherText += c === "" ? "-" : c;
+        if (i % 5 == 4) cipherText += " ";
     }
 
     // Update HTML elements
     document.getElementById("cipher-text").value = cipherText;
+    analyzeCipher();
 }
 document.getElementById("encrypt-button").onclick = encryptMA;
 
@@ -98,7 +110,24 @@ document.getElementById("encrypt-button").onclick = encryptMA;
  * Decrypt cipher text by shifting.
  */
 function decryptMA() {
+    // Count letter frequency
+    const cipherText = document.getElementById("cipher-text").value.toUpperCase();
+    setTable(document.getElementById("decrypt-key").value);
+    const table = reverseTable(getTable());
 
+    // Convert plain into cipher based on table
+    let plainText = "";
+    for (let c of cipherText) {
+        if (/^[A-Z]$/.test(c)) {
+            plainText += table[c] ?? "-";
+        } else {
+            plainText += c;
+        }
+    }
+    
+    // Update HTML elements
+    document.getElementById("plain-text").value = plainText;
+    analyzeCipher();
 }
 document.getElementById("decrypt-button").onclick = decryptMA;
 
