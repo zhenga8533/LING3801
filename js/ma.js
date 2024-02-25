@@ -30,7 +30,7 @@ const frequency = [
 
 // Load Google-Chart functions
 google.charts.load("current", {"packages":["bar"]});
-google.charts.setOnLoadCallback(analyzeCipher);
+google.charts.setOnLoadCallback(analyzeText);
 
 /**
  * Update google bar chart.
@@ -46,15 +46,26 @@ function drawChart() {
     chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
-function reverseTable(dictionary) {
+/**
+ * Reverses table to be used in decryption.
+ * 
+ * @param {Object} table - Current table element.
+ * @returns {Object} Reveresed dictionary.
+ */
+function reverseTable(table) {
     const reversed = {};
-    for (const key in dictionary) {
-        const value = dictionary[key];
+    for (const key in table) {
+        const value = table[key];
         reversed[value] = key;
     }
     return reversed;
 }
 
+/**
+ * Initializes the table with the key and fills in the rest in alphabetical order of non-used letters.
+ * 
+ * @param {String} key - Key word/phrase to use to set the table.
+ */
 function setTable(key) {
     if (!key.length) return;
     
@@ -72,6 +83,11 @@ function setTable(key) {
     });
 }
 
+/**
+ * Parses HTML table into a dictionary for use in decryption/encryption.
+ * 
+ * @returns {Object} - Dictionary replication of table.
+ */
 function getTable() {
     const table = {};
 
@@ -84,7 +100,7 @@ function getTable() {
 }
 
 /**
- * Encrypt plain text by shifting.
+ * Encrypts plain text by applying key/table.
  */
 function encryptMA() {
     // Count letter frequency
@@ -102,12 +118,12 @@ function encryptMA() {
 
     // Update HTML elements
     document.getElementById("cipher-text").value = cipherText;
-    analyzeCipher();
+    analyzeText();
 }
 document.getElementById("encrypt-button").onclick = encryptMA;
 
 /**
- * Decrypt cipher text by shifting.
+ * Decrypts cipher text by applying key/table.
  */
 function decryptMA() {
     // Count letter frequency
@@ -127,14 +143,14 @@ function decryptMA() {
     
     // Update HTML elements
     document.getElementById("plain-text").value = plainText;
-    analyzeCipher();
+    analyzeText();
 }
 document.getElementById("decrypt-button").onclick = decryptMA;
 
 /**
- * Analyzes
+ * Analyzes both cipher and plain text to determine letter, bigram, and trigram frequencies to update chart and table elements.
  */
-function analyzeCipher() {
+function analyzeText() {
     const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
     const plainText = document.getElementById("plain-text").value.replace(/[^a-zA-Z]/g, "").toLowerCase();
 
@@ -162,7 +178,7 @@ function analyzeCipher() {
     // Count the frequency of each bigram
     const n = cipherText.length;
     const bigramFreq = {};
-    for (let i = 0; i < n - 1; i += 2) {
+    for (let i = 0; i < n - 2; i++) {
         const bigram = cipherText.slice(i, i + 2);
         bigramFreq[bigram] = (bigramFreq[bigram] ?? 0) + 1;
     }
@@ -180,12 +196,12 @@ function analyzeCipher() {
             const oppositeFreq = bigramFreq[oppositeBigram] || 0;
 
             // Add row for the bigram
-            bigramTable += `<tr><td>${bigram}</td><td>${freq}</td><td>${Math.round(freq / n * 20_000) / 100}%</td></tr>\n`;
+            bigramTable += `<tr><td>${bigram}</td><td>${freq}</td><td>${Math.round(freq / n * 10_000) / 100}%</td></tr>\n`;
             processedBigrams[bigram] = true;
 
             // Add row for the opposite bigram if it exists and mark it as processed
             if (oppositeFreq > 0) {
-                bigramTable += `<tr><td>${oppositeBigram}</td><td>${oppositeFreq}</td><td>${Math.round(oppositeFreq / n * 20_000) / 100}%</td></tr>\n`;
+                bigramTable += `<tr><td>${oppositeBigram}</td><td>${oppositeFreq}</td><td>${Math.round(oppositeFreq / n * 10_000) / 100}%</td></tr>\n`;
                 processedBigrams[oppositeBigram] = true;
             }
         }
@@ -195,7 +211,7 @@ function analyzeCipher() {
 
     // Count the frequency of each trigram
     const trigramFreq = {};
-    for (let i = 0; i < n - 1; i += 3) {
+    for (let i = 0; i < n - 3; i++) {
         const trigram = cipherText.slice(i, i + 3);
         trigramFreq[trigram] = (trigramFreq[trigram] ?? 0) + 1;
     }
@@ -207,8 +223,10 @@ function analyzeCipher() {
     // Format each trigram and its frequency into the table
     sortedTrigrams.forEach(trigram => {
         const freq = trigramFreq[trigram];
-        trigramTable += `<tr><td>${trigram}</td><td>${freq}</td><td>${Math.round(freq / n * 30_000) / 100}%</td></tr>\n`;
+        if (freq > 1) {
+            trigramTable += `<tr><td>${trigram}</td><td>${freq}</td><td>${Math.round(freq / n * 10_000) / 100}%</td></tr>\n`;
+        }
     });
     document.getElementById("trigram-freq").innerHTML = trigramTable;
 }
-document.getElementById("analyze-button").onclick = analyzeCipher;
+document.getElementById("analyze-button").onclick = analyzeText;
