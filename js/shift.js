@@ -1,35 +1,35 @@
 const frequency = [
     ["Letter", "Plain", "Standard", "Cipher"],
-    ['a', 0, 0.082, 0],
-    ['b', 0, 0.015, 0],
-    ['c', 0, 0.028, 0],
-    ['d', 0, 0.043, 0],
-    ['e', 0, 0.127, 0],
-    ['f', 0, 0.022, 0],
-    ['g', 0, 0.02, 0],
-    ['h', 0, 0.061, 0],
-    ['i', 0, 0.07, 0],
-    ['j', 0, 0.0015, 0],
-    ['k', 0, 0.0077, 0],
-    ['l', 0, 0.04, 0],
-    ['m', 0, 0.024, 0],
-    ['n', 0, 0.067, 0],
-    ['o', 0, 0.075, 0],
-    ['p', 0, 0.019, 0],
-    ['q', 0, 0.00095, 0],
-    ['r', 0, 0.06, 0],
-    ['s', 0, 0.063, 0],
-    ['t', 0, 0.091, 0],
-    ['u', 0, 0.028, 0],
-    ['v', 0, 0.0098, 0],
-    ['w', 0, 0.024, 0],
-    ['x', 0, 0.0015, 0],
-    ['y', 0, 0.02, 0],
-    ['z', 0, 0.00074, 0]
+    ["a", 0, 0.082, 0],
+    ["b", 0, 0.015, 0],
+    ["c", 0, 0.028, 0],
+    ["d", 0, 0.043, 0],
+    ["e", 0, 0.127, 0],
+    ["f", 0, 0.022, 0],
+    ["g", 0, 0.02, 0],
+    ["h", 0, 0.061, 0],
+    ["i", 0, 0.07, 0],
+    ["j", 0, 0.0015, 0],
+    ["k", 0, 0.0077, 0],
+    ["l", 0, 0.04, 0],
+    ["m", 0, 0.024, 0],
+    ["n", 0, 0.067, 0],
+    ["o", 0, 0.075, 0],
+    ["p", 0, 0.019, 0],
+    ["q", 0, 0.00095, 0],
+    ["r", 0, 0.06, 0],
+    ["s", 0, 0.063, 0],
+    ["t", 0, 0.091, 0],
+    ["u", 0, 0.028, 0],
+    ["v", 0, 0.0098, 0],
+    ["w", 0, 0.024, 0],
+    ["x", 0, 0.0015, 0],
+    ["y", 0, 0.02, 0],
+    ["z", 0, 0.00074, 0]
 ];
 
 // Load Google-Chart functions
-google.charts.load('current', {'packages':['bar']});
+google.charts.load("current", {"packages":["bar"]});
 google.charts.setOnLoadCallback(decryptShift);
 
 /**
@@ -39,10 +39,10 @@ function drawChart() {
     const data = google.visualization.arrayToDataTable(frequency);
     const options = {
         chart: {
-            title: 'Frequency Graph'
+            title: "Frequency Graph"
         }
     };
-    const chart = new google.charts.Bar(document.getElementById('columnchart'));
+    const chart = new google.charts.Bar(document.getElementById("columnchart"));
     chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
@@ -53,24 +53,23 @@ function encryptShift() {
     // Count letter frequency
     const shift = ((parseInt(document.getElementById("plain-shift").value) % 26) + 26) % 26;
     const letterFrequency = {};
-    const plainText = document.getElementById("plain-text").value;
-    let shiftText = "";
+    const plainText = document.getElementById("plain-text").value.replace(/[^a-zA-Z]/g, "").toLowerCase();
+    let cipherText = "";
     const count = plainText.length;
-    let base = 'a'.charCodeAt(0);
+    let base = "a".charCodeAt(0);
 
     // Update shift label
     document.getElementById("cipher-shift").value = (26 - shift) % 26;
     
-    // Count letter frequency
+    // Count letter frequency and shift plain text
     for (let i in plainText) {
-        let c = plainText[i].toLowerCase();
-        if (/^[a-zA-Z]$/.test(c)) {
-            letterFrequency[c] = (letterFrequency[c] ?? 0) + 1;
-            let shifted = String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base);
-            shiftText += shifted.toUpperCase();
-        } else shiftText += c;
+        let c = plainText[i];
+        letterFrequency[c] = (letterFrequency[c] ?? 0) + 1;
+        let shifted = String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base);
+        cipherText += shifted.toUpperCase();
+        if (i % 5 === 4) cipherText += " ";
     }
-    document.getElementById("shift-text").value = shiftText;
+    document.getElementById("shift-text").value = cipherText;
     
     // Set frequency chart data
     for (let i = base; i < base + 26; i++) {
@@ -93,18 +92,18 @@ function decryptShift() {
     // Count letter frequency
     const shift = ((parseInt(document.getElementById("cipher-shift").value) % 26) + 26) % 26;
     const letterFrequency = {};
-    const shiftText = document.getElementById("shift-text").value;
+    const cipherText = document.getElementById("shift-text").value;
     let plainText = "";
-    const count = shiftText.length;
-    let base = 'a'.charCodeAt(0);
+    const count = cipherText.length;
+    let base = "a".charCodeAt(0);
 
     // Update shift labels
     document.getElementById("shift-label").textContent = shift;
     document.getElementById("plain-shift").value = (26 - shift) % 26;
     
     // Count letter frequency
-    for (let i in shiftText) {
-        let c = shiftText[i].toLowerCase();
+    for (let i in cipherText) {
+        let c = cipherText[i].toLowerCase();
         if (/^[a-zA-Z]$/.test(c)) {
             letterFrequency[c] = (letterFrequency[c] ?? 0) + 1;
             let shifted = String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base);
