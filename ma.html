@@ -31,7 +31,7 @@
             </div>
             <div class="input-container">
                 <h3>Need more info?</h3>
-                <a id="analyze-button" class="button" href="#frequency">Analyze</a>
+                <a id="analyze-button" class="button" href="#columnchart">Analyze</a>
             </div>
         </div>
         <hr> <!-- Plain text container -->
@@ -50,7 +50,7 @@
         </div>
         <hr> <!-- Frequency google charts -->
         <div class="text-container">
-            <h3>Playfair Table:</h3>
+            <h3>MA Table:</h3>
             <table id="ma-table">
                 <thead>
                     <tr>
@@ -84,48 +84,48 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="text" id="pf-0" maxlength="1" value="A"></td>
-                        <td><input type="text" id="pf-1" maxlength="1" value="B"></td>
-                        <td><input type="text" id="pf-2" maxlength="1" value="C"></td>
-                        <td><input type="text" id="pf-3" maxlength="1" value="D"></td>
-                        <td><input type="text" id="pf-4" maxlength="1" value="E"></td>
-                        <td><input type="text" id="pf-5" maxlength="1" value="F"></td>
-                        <td><input type="text" id="pf-6" maxlength="1" value="G"></td>
-                        <td><input type="text" id="pf-7" maxlength="1" value="H"></td>
-                        <td><input type="text" id="pf-8" maxlength="1" value="I"></td>
-                        <td><input type="text" id="pf-8" maxlength="1" value="J"></td>
-                        <td><input type="text" id="pf-9" maxlength="1" value="K"></td>
-                        <td><input type="text" id="pf-10" maxlength="1" value="L"></td>
-                        <td><input type="text" id="pf-11" maxlength="1" value="M"></td>
-                        <td><input type="text" id="pf-12" maxlength="1" value="N"></td>
-                        <td><input type="text" id="pf-13" maxlength="1" value="O"></td>
-                        <td><input type="text" id="pf-14" maxlength="1" value="P"></td>
-                        <td><input type="text" id="pf-15" maxlength="1" value="Q"></td>
-                        <td><input type="text" id="pf-16" maxlength="1" value="R"></td>
-                        <td><input type="text" id="pf-17" maxlength="1" value="S"></td>
-                        <td><input type="text" id="pf-18" maxlength="1" value="T"></td>
-                        <td><input type="text" id="pf-19" maxlength="1" value="U"></td>
-                        <td><input type="text" id="pf-20" maxlength="1" value="V"></td>
-                        <td><input type="text" id="pf-21" maxlength="1" value="W"></td>
-                        <td><input type="text" id="pf-22" maxlength="1" value="X"></td>
-                        <td><input type="text" id="pf-23" maxlength="1" value="Y"></td>
-                        <td><input type="text" id="pf-24" maxlength="1" value="Z"></td>
+                        <td><input type="text" id="ma-0" maxlength="1" value="A"></td>
+                        <td><input type="text" id="ma-1" maxlength="1" value="B"></td>
+                        <td><input type="text" id="ma-2" maxlength="1" value="C"></td>
+                        <td><input type="text" id="ma-3" maxlength="1" value="D"></td>
+                        <td><input type="text" id="ma-4" maxlength="1" value="E"></td>
+                        <td><input type="text" id="ma-5" maxlength="1" value="F"></td>
+                        <td><input type="text" id="ma-6" maxlength="1" value="G"></td>
+                        <td><input type="text" id="ma-7" maxlength="1" value="H"></td>
+                        <td><input type="text" id="ma-8" maxlength="1" value="I"></td>
+                        <td><input type="text" id="ma-9" maxlength="1" value="J"></td>
+                        <td><input type="text" id="ma-10" maxlength="1" value="K"></td>
+                        <td><input type="text" id="ma-11" maxlength="1" value="L"></td>
+                        <td><input type="text" id="ma-12" maxlength="1" value="M"></td>
+                        <td><input type="text" id="ma-13" maxlength="1" value="N"></td>
+                        <td><input type="text" id="ma-14" maxlength="1" value="O"></td>
+                        <td><input type="text" id="ma-15" maxlength="1" value="P"></td>
+                        <td><input type="text" id="ma-16" maxlength="1" value="Q"></td>
+                        <td><input type="text" id="ma-17" maxlength="1" value="R"></td>
+                        <td><input type="text" id="ma-18" maxlength="1" value="S"></td>
+                        <td><input type="text" id="ma-19" maxlength="1" value="T"></td>
+                        <td><input type="text" id="ma-20" maxlength="1" value="U"></td>
+                        <td><input type="text" id="ma-21" maxlength="1" value="V"></td>
+                        <td><input type="text" id="ma-22" maxlength="1" value="W"></td>
+                        <td><input type="text" id="ma-23" maxlength="1" value="X"></td>
+                        <td><input type="text" id="ma-24" maxlength="1" value="Y"></td>
+                        <td><input type="text" id="ma-25" maxlength="1" value="Z"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <hr> <!-- Frequency analysis tables -->
         <div id="frequency" class="frequency-wrapper">
-            <div id="frequency-container">
+            <div class="frequency-container">
                 <h3>Bigram Frequency:</h3>
-                <div id="bigram-container">
+                <div class="bigram-container">
                     <table id="bigram"></table>
                     <table id="bigram-freq"></table>
                 </div>
             </div>
-            <div id="frequency-container">
+            <div class="frequency-container">
                 <h3>Trigram Frequency:</h3>
-                <div id="trigram-container">
+                <div class="bigram-container">
                     <table id="trigram"></table>
                     <table id="trigram-freq"></table>
                 </div>

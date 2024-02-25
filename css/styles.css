@@ -170,7 +170,7 @@ tr:hover {
 .frequency-wrapper {
     display: flex;
     width: calc(100% - 4rem);
-    gap: 1rem;
+    gap: 2rem;
     margin: 1rem;
     padding: 1rem;
 }
@@ -198,11 +198,11 @@ tr:hover {
     text-align: center;
 }
 
-#bigram-container {
+.bigram-container {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
 }
 
-#bigram, #bigram-freq {
+#bigram, #bigram-freq, #trigram, #trigram-freq {
     display: block;
 }

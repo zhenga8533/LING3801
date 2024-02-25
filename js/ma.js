@@ -30,7 +30,7 @@ const frequency = [
 
 // Load Google-Chart functions
 google.charts.load('current', {'packages':['bar']});
-google.charts.setOnLoadCallback(decryptMA);
+google.charts.setOnLoadCallback(drawChart);
 
 /**
  * Update google bar chart.
@@ -51,35 +51,7 @@ function drawChart() {
  */
 function encryptMA() {
     // Count letter frequency
-    const shift = ((parseInt(document.getElementById("plain-shift").value) % 26) + 26) % 26;
-    const letterFrequency = {};
     const plainText = document.getElementById("plain-text").value;
-    let shiftText = "";
-    const count = plainText.length;
-    let base = 'a'.charCodeAt(0);
-
-    // Update shift label
-    document.getElementById("cipher-shift").value = (26 - shift) % 26;
-    
-    // Count letter frequency
-    for (let i in plainText) {
-        let c = plainText[i].toLowerCase();
-        if (/^[a-zA-Z]$/.test(c)) {
-            letterFrequency[c] = (letterFrequency[c] ?? 0) + 1;
-            let shifted = String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base);
-            shiftText += shifted.toUpperCase();
-        } else shiftText += c;
-    }
-    document.getElementById("shift-text").value = shiftText;
-    
-    // Set frequency chart data
-    for (let i = base; i < base + 26; i++) {
-        let freq = (letterFrequency[String.fromCharCode(i)] ?? 0) / count;
-        let index = i - base + 1;
-        frequency[index][1] = freq;
-        index = (index + shift - 1) % 26 + 1;
-        frequency[index][3] = freq;
-    }
 
     // Update column chart
     drawChart();
@@ -97,3 +69,63 @@ function decryptMA() {
     drawChart();
 }
 document.getElementById("decrypt-button").onclick = decryptMA;
+
+/**
+ * Analyzes
+ */
+function analyzeCipher() {
+    const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
+    const n = cipherText.length;
+
+    // Count the frequency of each bigram
+    const bigramFreq = {};
+    for (let i = 0; i < n - 1; i += 2) {
+        const bigram = cipherText.slice(i, i + 2);
+        bigramFreq[bigram] = (bigramFreq[bigram] ?? 0) + 1;
+    }
+
+    // Update bigram table
+    let bigramTable = "<tr><th>Cipher</th><th>Count</th><th>Frequency (%)</th></tr>\n";
+    const sortedBigrams = Object.keys(bigramFreq).sort((a, b) => bigramFreq[b] - bigramFreq[a]);
+    const processedBigrams = {}; // To keep track of processed bigrams
+
+    // Format each bigram and its frequency into the table
+    sortedBigrams.forEach(bigram => {
+        if (!processedBigrams[bigram]) {
+            const freq = bigramFreq[bigram];
+            const oppositeBigram = bigram[1] + bigram[0]; // Create the opposite bigram
+            const oppositeFreq = bigramFreq[oppositeBigram] || 0; // Frequency of the opposite bigram
+
+            // Add row for the bigram
+            bigramTable += `<tr><td>${bigram}</td><td>${freq}</td><td>${Math.round(freq / n * 20_000) / 100}%</td></tr>\n`;
+            processedBigrams[bigram] = true;
+
+            // Add row for the opposite bigram if it exists and mark it as processed
+            if (oppositeFreq > 0) {
+                bigramTable += `<tr><td>${oppositeBigram}</td><td>${oppositeFreq}</td><td>${Math.round(oppositeFreq / n * 20_000) / 100}%</td></tr>\n`;
+                processedBigrams[oppositeBigram] = true;
+            }
+        }
+    });
+    document.getElementById("bigram-freq").innerHTML = bigramTable;
+    
+    // Count the frequency of each trigram
+    const trigramFreq = {};
+    for (let i = 0; i < n - 1; i += 3) {
+        const trigram = cipherText.slice(i, i + 3);
+        trigramFreq[trigram] = (trigramFreq[trigram] ?? 0) + 1;
+    }
+
+    // Update trigram table
+    let trigramTable = "<tr><th>Cipher</th><th>Count</th><th>Frequency (%)</th></tr>\n";
+    const sortedTrigrams = Object.keys(trigramFreq).sort((a, b) => trigramFreq[b] - trigramFreq[a]);
+
+    // Format each trigram and its frequency into the table
+    sortedTrigrams.forEach(trigram => {
+        const freq = trigramFreq[trigram];
+        trigramTable += `<tr><td>${trigram}</td><td>${freq}</td><td>${Math.round(freq / n * 30_000) / 100}%</td></tr>\n`;
+    });
+    document.getElementById("trigram-freq").innerHTML = trigramTable;
+}
+document.getElementById("analyze-button").onclick = analyzeCipher;
+analyzeCipher();
