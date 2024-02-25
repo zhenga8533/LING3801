@@ -1,3 +1,6 @@
+/**
+ * Global playfair table variables.
+ */
 let table = [
     ["A", "B", "C", "D", "E"],
     ["F", "G", "H", "I", "K"],
@@ -36,7 +39,7 @@ for (let i = 0; i < 5; i++) {
         });
     }
 
-    // Set playfair table swapping
+    // Set playfair table row/col swapping
     let rowElement = document.getElementById(`row-${i + 1}`);
     rowElement.onclick = () => {
         const index = rowSwap.indexOf(i);
@@ -84,7 +87,19 @@ for (let i = 0; i < 5; i++) {
 }
 
 /**
- * 
+ * Set load/save state buttons.
+ */
+document.getElementById("save-btn").onclick = () => {
+    setTable();
+    lastSave = table.map(row => row.slice());
+}
+document.getElementById("load-btn").onclick = () => {
+    table = lastSave.map(row => row.slice());
+    updateTable();
+}
+
+/**
+ * Updates table array to be up to date to HTML table.
  */
 function setTable() {
     for (let i = 0; i < 5; i++) {
@@ -96,7 +111,7 @@ function setTable() {
 }
 
 /**
- * Update table HTML 
+ * Updates table HTML to be up to date to array table.
  */
 function updateTable() {
     for (let i = 0; i < 5; i++) {
@@ -108,7 +123,7 @@ function updateTable() {
 }
 
 /**
- * Clears table and HTML table.
+ * Clears table array and HTML table.
  */
 function clearTable() {
     for (let i = 0; i < 5; i++) {
@@ -121,166 +136,10 @@ function clearTable() {
 document.getElementById("clear-table").onclick = clearTable;
 
 /**
- * Set load/save buttons
- */
-document.getElementById("save-btn").onclick = () => {
-    setTable();
-    lastSave = table.map(row => row.slice());
-}
-document.getElementById("load-btn").onclick = () => {
-    table = lastSave.map(row => row.slice());
-    updateTable();
-}
-
-/**
+ * Updates the table to match provided key, if there is one, and updates table display.
  * 
- * @param {Number} direction 
- * @returns 
+ * @param {String} keyType - Encryption/decryption key document ID string.
  */
-function shiftRows(direction) {
-    const numRows = table.length;
-    
-    if (direction === 1) {
-        const lastRow = table[numRows - 1];
-        for (let i = numRows - 1; i > 0; i--) {
-            table[i] = table[i - 1];
-        }
-        table[0] = lastRow;
-    } else if (direction === -1) {
-        const firstRow = table[0];
-        for (let i = 0; i < numRows - 1; i++) {
-            table[i] = table[i + 1];
-        }
-        table[numRows - 1] = firstRow;
-    }
-    updateTable();
-}
-document.getElementById("row-up").onclick = () => { shiftRows(-1) }
-document.getElementById("row-down").onclick = () => { shiftRows(1) }
-
-/**
- * 
- * @param {Number} direction 
- * @returns 
- */
-function shiftColumns(direction) {
-    const numRows = table.length;
-    const numCols = table[0].length;
-    
-    if (direction === 1) {
-        for (let i = 0; i < numRows; i++) {
-            const lastElement = table[i][numCols - 1];
-            for (let j = numCols - 1; j > 0; j--) {
-                table[i][j] = table[i][j - 1];
-            }
-            table[i][0] = lastElement;
-        }
-    } else if (direction === -1) {
-        for (let i = 0; i < numRows; i++) {
-            const firstElement = table[i][0];
-            for (let j = 0; j < numCols - 1; j++) {
-                table[i][j] = table[i][j + 1];
-            }
-            table[i][numCols - 1] = firstElement;
-        }
-    }
-    updateTable();
-}
-document.getElementById("col-left").onclick = () => { shiftColumns(-1) }
-document.getElementById("col-right").onclick = () => { shiftColumns(1) }
-
-/**
- * Shifts column of table up or down.
- * 
- * @param {Number} col 
- * @param {Number} direction 
- */
-function shiftCol(col, direction) {
-    // Copy the column to be shifted
-    const shiftedColumn = [];
-    for (let i = 0; i < table.length; i++) {
-        shiftedColumn.push(table[i][col]);
-    }
-
-    // Update the original table with the shifted column
-    for (let i = 0; i < table.length; i++) {
-        const newRow = (i + direction + table.length) % table.length;
-        table[i][col] = shiftedColumn[newRow];
-    }
-    updateTable();
-}
-
-/**
- * Shifts row of table left or right.
- * 
- * @param {Number} row 
- * @param {Number} direction 
- */
-function shiftRow(row, direction) {
-    const newRow = [];
-    for (let i = 0; i < table[row].length; i++) {
-        const newIndex = (i + direction + table[row].length) % table[row].length;
-        newRow[newIndex] = table[row][i];
-    }
-    table[row] = newRow;
-    updateTable();
-}
-
-/**
- * Set row/col shift button event listeners.
- */
-for (let i = 0; i < 5; i++) {
-    document.getElementById(`row-l${i}`).addEventListener('click', function(event) {
-        event.stopPropagation();
-        shiftRow(i, -1);
-    });
-    document.getElementById(`row-r${i}`).addEventListener('click', function(event) {
-        event.stopPropagation();
-        shiftRow(i, 1);
-    });
-    document.getElementById(`col-l${i}`).addEventListener('click', function(event) {
-        event.stopPropagation();
-        shiftCol(i, 1);
-    });
-    document.getElementById(`col-r${i}`).addEventListener('click', function(event) {
-        event.stopPropagation();
-        shiftCol(i, -1);
-    });
-}
-
-/**
- * 
- * @param {*} direction 
- */
-function rotateTable(direction) {
-    const n = table.length;
-    for (let layer = 0; layer < n / 2; layer++) {
-        const first = layer;
-        const last = n - 1 - layer;
-        for (let i = first; i < last; i++) {
-            const offset = i - first;
-            const top = table[first][i];
-
-            if (direction === 1) { // Clockwise rotation
-                table[first][i] = table[last - offset][first];
-                table[last - offset][first] = table[last][last - offset];
-                table[last][last - offset] = table[i][last];
-                table[i][last] = top;
-            } else if (direction === -1) { // Counterclockwise rotation
-                table[first][i] = table[i][last];
-                table[i][last] = table[last][last - offset];
-                table[last][last - offset] = table[last - offset][first];
-                table[last - offset][first] = top;
-            }
-        }
-    }
-    updateTable();
-}
-document.getElementById("rotate-cw").onclick = () => { rotateTable(1) }
-document.getElementById("rotate-ccw").onclick = () => { rotateTable(-1) }
-
-
-// Encryption functions
 function fixTable(keyType) {
     const key = document.getElementById(keyType).value.replace(/[^a-zA-Z]/g, "");
     if (key === "") return;
@@ -315,6 +174,162 @@ function fixTable(keyType) {
     updateTable();
 }
 
+/**
+ * Shifts all rows of table up or down and then updates table display.
+ * 
+ * @param {Number} direction - 1 for down shift, -1 for up shift
+ */
+function shiftRows(direction) {
+    const numRows = table.length;
+    
+    if (direction === 1) {
+        const lastRow = table[numRows - 1];
+        for (let i = numRows - 1; i > 0; i--) {
+            table[i] = table[i - 1];
+        }
+        table[0] = lastRow;
+    } else if (direction === -1) {
+        const firstRow = table[0];
+        for (let i = 0; i < numRows - 1; i++) {
+            table[i] = table[i + 1];
+        }
+        table[numRows - 1] = firstRow;
+    }
+    updateTable();
+}
+document.getElementById("row-up").onclick = () => { shiftRows(-1) }
+document.getElementById("row-down").onclick = () => { shiftRows(1) }
+
+/**
+ * Shifts all columns in table left or right and then updates table display.
+ * 
+ * @param {Number} direction - 1 for right shift, -1 for left shift.
+ */
+function shiftColumns(direction) {
+    const numRows = table.length;
+    const numCols = table[0].length;
+    
+    if (direction === 1) {
+        for (let i = 0; i < numRows; i++) {
+            const lastElement = table[i][numCols - 1];
+            for (let j = numCols - 1; j > 0; j--) {
+                table[i][j] = table[i][j - 1];
+            }
+            table[i][0] = lastElement;
+        }
+    } else if (direction === -1) {
+        for (let i = 0; i < numRows; i++) {
+            const firstElement = table[i][0];
+            for (let j = 0; j < numCols - 1; j++) {
+                table[i][j] = table[i][j + 1];
+            }
+            table[i][numCols - 1] = firstElement;
+        }
+    }
+    updateTable();
+}
+document.getElementById("col-left").onclick = () => { shiftColumns(-1) }
+document.getElementById("col-right").onclick = () => { shiftColumns(1) }
+
+/**
+ * Shifts elements in a single column of table up or down.
+ * 
+ * @param {Number} col - Column ID number (0-4).
+ * @param {Number} direction - 1 for left shift, -1 for right shift.
+ */
+function shiftCol(col, direction) {
+    // Copy the column to be shifted
+    const shiftedColumn = [];
+    for (let i = 0; i < table.length; i++) {
+        shiftedColumn.push(table[i][col]);
+    }
+
+    // Update the original table with the shifted column
+    for (let i = 0; i < table.length; i++) {
+        const newRow = (i + direction + table.length) % table.length;
+        table[i][col] = shiftedColumn[newRow];
+    }
+    updateTable();
+}
+
+/**
+ * Shifts elements in a single row of table left or right.
+ * 
+ * @param {Number} row - Row ID number (0-4).
+ * @param {Number} direction - 1 for right shift, -1 for left shift.
+ */
+function shiftRow(row, direction) {
+    const newRow = [];
+    for (let i = 0; i < table[row].length; i++) {
+        const newIndex = (i + direction + table[row].length) % table[row].length;
+        newRow[newIndex] = table[row][i];
+    }
+    table[row] = newRow;
+    updateTable();
+}
+
+/**
+ * Set row/col shift button event listeners.
+ */
+for (let i = 0; i < 5; i++) {
+    document.getElementById(`row-l${i}`).addEventListener('click', function(event) {
+        event.stopPropagation();
+        shiftRow(i, -1);
+    });
+    document.getElementById(`row-r${i}`).addEventListener('click', function(event) {
+        event.stopPropagation();
+        shiftRow(i, 1);
+    });
+    document.getElementById(`col-l${i}`).addEventListener('click', function(event) {
+        event.stopPropagation();
+        shiftCol(i, 1);
+    });
+    document.getElementById(`col-r${i}`).addEventListener('click', function(event) {
+        event.stopPropagation();
+        shiftCol(i, -1);
+    });
+}
+
+/**
+ * Rotates all elements in table clockwise or counter-clockwise and updates table display.
+ * 
+ * @param {Number} direction - 1 for clockwise rotation, -1 for counter-clockwise rotation.
+ */
+function rotateTable(direction) {
+    const n = table.length;
+    for (let layer = 0; layer < n / 2; layer++) {
+        const first = layer;
+        const last = n - 1 - layer;
+        for (let i = first; i < last; i++) {
+            const offset = i - first;
+            const top = table[first][i];
+
+            if (direction === 1) { // Clockwise rotation
+                table[first][i] = table[last - offset][first];
+                table[last - offset][first] = table[last][last - offset];
+                table[last][last - offset] = table[i][last];
+                table[i][last] = top;
+            } else if (direction === -1) { // Counterclockwise rotation
+                table[first][i] = table[i][last];
+                table[i][last] = table[last][last - offset];
+                table[last][last - offset] = table[last - offset][first];
+                table[last - offset][first] = top;
+            }
+        }
+    }
+    updateTable();
+}
+document.getElementById("rotate-cw").onclick = () => { rotateTable(1) }
+document.getElementById("rotate-ccw").onclick = () => { rotateTable(-1) }
+
+
+// --- Encryption functions ---
+/**
+ * Finds row/col index of provided character in table.
+ * 
+ * @param {String} char - Character to look for in table.
+ * @returns { row: Number, col: Number } - Row and column number that element appears in.
+ */
 function findChar(char) {
     for (let i = 0; i < table.length; i++) {
         for (let j = 0; j < table[i].length; j++) {
@@ -326,6 +341,9 @@ function findChar(char) {
     return null;
 }
 
+/**
+ * Encrypts plain text using playfair table/key and sets result into cipher text.
+ */
 function playfairEncrypt() {
     fixTable("encrypt-key");
 
@@ -383,31 +401,38 @@ function playfairEncrypt() {
 document.getElementById("encrypt-button").onclick = playfairEncrypt;
 
 
-// Decryption functions
+// --- Decryption functions ---
+/**
+ * Finds the digraph for given characters in the table.
+ * 
+ * @param {String} char1 - The first character.
+ * @param {String} char2 - The second character.
+ * @returns An array containing the digraph characters.
+ */
 function findDigraph(char1, char2) {
     const pos1 = findChar(char1);
     const pos2 = findChar(char2);
 
-    // If either position is not found, return '--'
+    // If either position is not found, return ['-', '-']
     if (!pos1 || !pos2) {
         return ['-', '-'];
     }
 
-    // Same row
+    // If both characters are in the same row
     if (pos1.row === pos2.row) {
         return [
             table[pos1.row][(pos1.col - 1 + table[pos1.row].length) % table[pos1.row].length],
             table[pos2.row][(pos2.col - 1 + table[pos2.row].length) % table[pos2.row].length]
         ];
     }
-    // Same column
+    // If both characters are in the same column
     else if (pos1.col === pos2.col) {
         return [
             table[(pos1.row - 1 + table.length) % table.length][pos1.col],
             table[(pos2.row - 1 + table.length) % table.length][pos2.col]
         ];
     }
-    // Rectangle rule
+    // If characters form a box in the table
     else {
         return [
             table[pos1.row][pos2.col],
@@ -416,6 +441,9 @@ function findDigraph(char1, char2) {
     }
 }
 
+/**
+ * Decrypts cipher text using playfair table/key and sets result into plain text.
+ */
 function playfairDecrypt() {
     fixTable("decrypt-key");
     setTable();
@@ -439,7 +467,10 @@ function playfairDecrypt() {
 document.getElementById("decrypt-button").onclick = playfairDecrypt;
 
 
-// Bigram frequency functions
+// --- Bigram frequency analysis function ---
+/**
+ * Counts frequency of bigrams in cipher text and updates bigram table to display results.
+ */
 function countBigramFrequency() {
     const bigramFreq = {};
     const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
@@ -476,6 +507,5 @@ function countBigramFrequency() {
     });
     document.getElementById("bigram-freq").innerHTML = bigramTable;
 }
-
 document.getElementById("analyze-button").onclick = countBigramFrequency;
 countBigramFrequency();
