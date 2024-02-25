@@ -30,7 +30,7 @@ const frequency = [
 
 // Load Google-Chart functions
 google.charts.load("current", {"packages":["bar"]});
-google.charts.setOnLoadCallback(drawChart);
+google.charts.setOnLoadCallback(analyzeCipher);
 
 /**
  * Update google bar chart.
@@ -91,7 +91,6 @@ function encryptMA() {
 
     // Update HTML elements
     document.getElementById("cipher-text").value = cipherText;
-    drawChart();
 }
 document.getElementById("encrypt-button").onclick = encryptMA;
 
@@ -99,11 +98,7 @@ document.getElementById("encrypt-button").onclick = encryptMA;
  * Decrypt cipher text by shifting.
  */
 function decryptMA() {
-    // Count letter frequency
-    const letterFrequency = {};
 
-    // Update column chart
-    drawChart();
 }
 document.getElementById("decrypt-button").onclick = decryptMA;
 
@@ -112,9 +107,31 @@ document.getElementById("decrypt-button").onclick = decryptMA;
  */
 function analyzeCipher() {
     const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
-    const n = cipherText.length;
+    const plainText = document.getElementById("plain-text").value.replace(/[^a-zA-Z]/g, "").toLowerCase();
+
+    // Count the frequency of each letter
+    const upperFreq = {};
+    for (let c of cipherText) {
+        upperFreq[c] = (upperFreq[c] ?? 0) + 1;
+    }
+
+    const lowerFreq = {};
+    for (let c of plainText) {
+        lowerFreq[c] = (lowerFreq[c] ?? 0) + 1;
+    }
+    
+    // Update frequency graph
+    const capitalBase = "A".charCodeAt(0);
+    const lowerBase = "a".charCodeAt(0);
+    for (let i = 0; i < 26; i++) {
+        frequency[i + 1][1] = (lowerFreq[String.fromCharCode(lowerBase + i)] ?? 0) / (plainText.length || 1);
+        frequency[i + 1][3] = (upperFreq[String.fromCharCode(capitalBase + i)] ?? 0) / (cipherText.length || 1);
+    }
+    drawChart();
+
 
     // Count the frequency of each bigram
+    const n = cipherText.length;
     const bigramFreq = {};
     for (let i = 0; i < n - 1; i += 2) {
         const bigram = cipherText.slice(i, i + 2);
@@ -124,14 +141,14 @@ function analyzeCipher() {
     // Update bigram table
     let bigramTable = "<tr><th>Cipher</th><th>Count</th><th>Frequency (%)</th></tr>\n";
     const sortedBigrams = Object.keys(bigramFreq).sort((a, b) => bigramFreq[b] - bigramFreq[a]);
-    const processedBigrams = {}; // To keep track of processed bigrams
+    const processedBigrams = {};
 
     // Format each bigram and its frequency into the table
     sortedBigrams.forEach(bigram => {
         if (!processedBigrams[bigram]) {
             const freq = bigramFreq[bigram];
-            const oppositeBigram = bigram[1] + bigram[0]; // Create the opposite bigram
-            const oppositeFreq = bigramFreq[oppositeBigram] || 0; // Frequency of the opposite bigram
+            const oppositeBigram = bigram[1] + bigram[0];
+            const oppositeFreq = bigramFreq[oppositeBigram] || 0;
 
             // Add row for the bigram
             bigramTable += `<tr><td>${bigram}</td><td>${freq}</td><td>${Math.round(freq / n * 20_000) / 100}%</td></tr>\n`;
@@ -146,6 +163,7 @@ function analyzeCipher() {
     });
     document.getElementById("bigram-freq").innerHTML = bigramTable;
     
+
     // Count the frequency of each trigram
     const trigramFreq = {};
     for (let i = 0; i < n - 1; i += 3) {
@@ -165,4 +183,3 @@ function analyzeCipher() {
     document.getElementById("trigram-freq").innerHTML = trigramTable;
 }
 document.getElementById("analyze-button").onclick = analyzeCipher;
-analyzeCipher();
