@@ -1,35 +1,35 @@
 const frequency = [
     ["Letter", "Plain", "Standard", "Cipher"],
-    ['a', 0, 0.082, 0],
-    ['b', 0, 0.015, 0],
-    ['c', 0, 0.028, 0],
-    ['d', 0, 0.043, 0],
-    ['e', 0, 0.127, 0],
-    ['f', 0, 0.022, 0],
-    ['g', 0, 0.02, 0],
-    ['h', 0, 0.061, 0],
-    ['i', 0, 0.07, 0],
-    ['j', 0, 0.0015, 0],
-    ['k', 0, 0.0077, 0],
-    ['l', 0, 0.04, 0],
-    ['m', 0, 0.024, 0],
-    ['n', 0, 0.067, 0],
-    ['o', 0, 0.075, 0],
-    ['p', 0, 0.019, 0],
-    ['q', 0, 0.00095, 0],
-    ['r', 0, 0.06, 0],
-    ['s', 0, 0.063, 0],
-    ['t', 0, 0.091, 0],
-    ['u', 0, 0.028, 0],
-    ['v', 0, 0.0098, 0],
-    ['w', 0, 0.024, 0],
-    ['x', 0, 0.0015, 0],
-    ['y', 0, 0.02, 0],
-    ['z', 0, 0.00074, 0]
+    ["a", 0, 0.082, 0],
+    ["b", 0, 0.015, 0],
+    ["c", 0, 0.028, 0],
+    ["d", 0, 0.043, 0],
+    ["e", 0, 0.127, 0],
+    ["f", 0, 0.022, 0],
+    ["g", 0, 0.02, 0],
+    ["h", 0, 0.061, 0],
+    ["i", 0, 0.07, 0],
+    ["j", 0, 0.0015, 0],
+    ["k", 0, 0.0077, 0],
+    ["l", 0, 0.04, 0],
+    ["m", 0, 0.024, 0],
+    ["n", 0, 0.067, 0],
+    ["o", 0, 0.075, 0],
+    ["p", 0, 0.019, 0],
+    ["q", 0, 0.00095, 0],
+    ["r", 0, 0.06, 0],
+    ["s", 0, 0.063, 0],
+    ["t", 0, 0.091, 0],
+    ["u", 0, 0.028, 0],
+    ["v", 0, 0.0098, 0],
+    ["w", 0, 0.024, 0],
+    ["x", 0, 0.0015, 0],
+    ["y", 0, 0.02, 0],
+    ["z", 0, 0.00074, 0]
 ];
 
 // Load Google-Chart functions
-google.charts.load('current', {'packages':['bar']});
+google.charts.load("current", {"packages":["bar"]});
 google.charts.setOnLoadCallback(drawChart);
 
 /**
@@ -39,11 +39,39 @@ function drawChart() {
     const data = google.visualization.arrayToDataTable(frequency);
     const options = {
         chart: {
-            title: 'Frequency Graph'
+            title: "Frequency Graph"
         }
     };
-    const chart = new google.charts.Bar(document.getElementById('columnchart'));
+    const chart = new google.charts.Bar(document.getElementById("columnchart"));
     chart.draw(data, google.charts.Bar.convertOptions(options));
+}
+
+function setTable(key) {
+    if (!key.length) return;
+    
+    key = key.replace(/[^a-zA-Z]/g, "").toUpperCase();
+    key = [...new Set(key.split(""))].join("");
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let availableLetters = alphabet.split("").filter(letter => !key.includes(letter));
+
+    key.split("").forEach((letter, index) => {
+        document.getElementById(`ma-${index}`).value = letter;
+    });
+
+    availableLetters.forEach((letter, index) => {
+        document.getElementById(`ma-${key.length + index}`).value = letter;
+    });
+}
+
+function getTable() {
+    const table = {};
+
+    let base = "a".charCodeAt(0);
+    for (let i = 0; i < 26; i++) {
+        table[String.fromCharCode(base + i)] = document.getElementById(`ma-${i}`).value.toUpperCase();
+    }
+
+    return table;
 }
 
 /**
@@ -51,9 +79,18 @@ function drawChart() {
  */
 function encryptMA() {
     // Count letter frequency
-    const plainText = document.getElementById("plain-text").value;
+    const plainText = document.getElementById("plain-text").value.replace(/[^a-zA-Z]/g, "").toLowerCase();
+    setTable(document.getElementById("encrypt-key").value);
+    const table = getTable();
 
-    // Update column chart
+    // Convert plain into cipher based on table
+    let cipherText = "";
+    for (let c of plainText) {
+        cipherText += table[c] ?? "-";
+    }
+
+    // Update HTML elements
+    document.getElementById("cipher-text").value = cipherText;
     drawChart();
 }
 document.getElementById("encrypt-button").onclick = encryptMA;
