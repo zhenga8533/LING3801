@@ -49,16 +49,16 @@
                 <thead>
                     <tr>
                         <th><button id="clear-table">Clear</button></th>
-                        <th><button id="col-l0">&lt</button> Column 1 <button id="col-r0">&gt</button></th>
-                        <th><button id="col-l1">&lt</button> Column 2 <button id="col-r1">&gt</button></th>
-                        <th><button id="col-l2">&lt</button> Column 3 <button id="col-r2">&gt</button></th>
-                        <th><button id="col-l3">&lt</button> Column 4 <button id="col-r3">&gt</button></th>
-                        <th><button id="col-l4">&lt</button> Column 5 <button id="col-r4">&gt</button></th>
+                        <th id="col-1" class="selectable"><button id="col-l0">&lt</button> Column 1 <button id="col-r0">&gt</button></th>
+                        <th id="col-2" class="selectable"><button id="col-l1">&lt</button> Column 2 <button id="col-r1">&gt</button></th>
+                        <th id="col-3" class="selectable"><button id="col-l2">&lt</button> Column 3 <button id="col-r2">&gt</button></th>
+                        <th id="col-4" class="selectable"><button id="col-l3">&lt</button> Column 4 <button id="col-r3">&gt</button></th>
+                        <th id="col-5" class="selectable"><button id="col-l4">&lt</button> Column 5 <button id="col-r4">&gt</button></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th><button id="row-l0">&lt</button> Row 1 <button id="row-r0">&gt</button></th>
+                        <th id="row-1" class="selectable"><button id="row-l0">&lt</button> Row 1 <button id="row-r0">&gt</button></th>
                         <td><input type="text" id="pf-0" maxlength="1" value="A"></td>
                         <td><input type="text" id="pf-1" maxlength="1" value="B"></td>
                         <td><input type="text" id="pf-2" maxlength="1" value="C"></td>
@@ -66,7 +66,7 @@
                         <td><input type="text" id="pf-4" maxlength="1" value="E"></td>
                     </tr>
                     <tr>
-                        <th><button id="row-l1">&lt</button> Row 2 <button id="row-r1">&gt</button></th>
+                        <th id="row-2" class="selectable"><button id="row-l1">&lt</button> Row 2 <button id="row-r1">&gt</button></th>
                         <td><input type="text" id="pf-5" maxlength="1" value="F"></td>
                         <td><input type="text" id="pf-6" maxlength="1" value="G"></td>
                         <td><input type="text" id="pf-7" maxlength="1" value="H"></td>
@@ -75,7 +75,7 @@
                         <td class="special-control"><button id="row-up">↑</button></td>
                     </tr>
                     <tr>
-                        <th><button id="row-l2">&lt</button> Row 3 <button id="row-r2">&gt</button></th>
+                        <th id="row-3" class="selectable"><button id="row-l2">&lt</button> Row 3 <button id="row-r2">&gt</button></th>
                         <td><input type="text" id="pf-10" maxlength="1" value="L"></td>
                         <td><input type="text" id="pf-11" maxlength="1" value="M"></td>
                         <td><input type="text" id="pf-12" maxlength="1" value="N"></td>
@@ -83,7 +83,7 @@
                         <td><input type="text" id="pf-14" maxlength="1" value="P"></td>
                     </tr>
                     <tr>
-                        <th><button id="row-l3">&lt</button> Row 4 <button id="row-r3">&gt</button></th>
+                        <th id="row-4" class="selectable"><button id="row-l3">&lt;</button> Row 4 <button id="row-r3">&gt;</button></th>
                         <td><input type="text" id="pf-15" maxlength="1" value="Q"></td>
                         <td><input type="text" id="pf-16" maxlength="1" value="R"></td>
                         <td><input type="text" id="pf-17" maxlength="1" value="S"></td>
@@ -92,7 +92,7 @@
                         <td class="special-control"><button id="row-down">↓</button></td>
                     </tr>
                     <tr>
-                        <th><button id="row-l4">&lt</button> Row 5 <button id="row-r4">&gt</button></th>
+                        <th id="row-5" class="selectable"><button id="row-l4">&lt</button> Row 5 <button id="row-r4">&gt</button></th>
                         <td><input type="text" id="pf-20" maxlength="1" value="V"></td>
                         <td><input type="text" id="pf-21" maxlength="1" value="W"></td>
                         <td><input type="text" id="pf-22" maxlength="1" value="X"></td>

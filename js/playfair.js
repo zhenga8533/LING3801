@@ -6,6 +6,8 @@ let table = [
     ["V", "W", "X", "Y", "Z"]
 ];
 let lastSave = table.map(row => row.slice());
+let rowSwap = [];
+let colSwap = [];
 
 /**
  * Set correct events for all table inputs. Verifies correct inputs and table.
@@ -14,7 +16,7 @@ for (let i = 0; i < 5; i++) {
     for (let j = 0; j < 5; j++) {
         let tableInput = document.getElementById(`pf-${i * 5 + j}`);
         tableInput.onkeydown = () => /[a-z]/i.test(event.key);
-        tableInput.addEventListener("input", () => {
+        tableInput.addEventListener("input", (event) => {
             tableInput.value = tableInput.value.toUpperCase();
             setTable();
 
@@ -32,6 +34,52 @@ for (let i = 0; i < 5; i++) {
 
             updateTable();
         });
+    }
+
+    // Set playfair table swapping
+    let rowElement = document.getElementById(`row-${i + 1}`);
+    rowElement.onclick = () => {
+        const index = rowSwap.indexOf(i);
+        if (index !== -1) {
+            rowSwap.splice(index, 1);
+            rowElement.classList.toggle("selected");
+        } else {
+            rowSwap.push(i);
+
+            // Swap if two rows selected
+            if (rowSwap.length === 2) {
+                let temp = table[rowSwap[0]];
+                table[rowSwap[0]] = table[rowSwap[1]];
+                table[rowSwap[1]] = temp;
+
+                updateTable();
+                document.getElementById(`row-${rowSwap[0] + 1}`).classList.toggle("selected");
+                rowSwap = [];
+            } else rowElement.classList.toggle("selected");
+        }
+    }
+    let colElement = document.getElementById(`col-${i + 1}`);
+    colElement.onclick = () => {
+        const index = colSwap.indexOf(i);
+        if (index !== -1) {
+            colSwap.splice(index, 1);
+            colElement.classList.toggle("selected");
+        } else {
+            colSwap.push(i);
+
+            // Swap if two columns selected
+            if (colSwap.length === 2) {
+                for (let row = 0; row < table.length; row++) {
+                    let temp = table[row][colSwap[0]];
+                    table[row][colSwap[0]] = table[row][colSwap[1]];
+                    table[row][colSwap[1]] = temp;
+                }
+
+                updateTable();
+                document.getElementById(`col-${colSwap[0] + 1}`).classList.toggle("selected");
+                colSwap = [];
+            } else colElement.classList.toggle("selected");
+        }
     }
 }
 
@@ -182,10 +230,22 @@ function shiftRow(row, direction) {
  * Set row/col shift button event listeners.
  */
 for (let i = 0; i < 5; i++) {
-    document.getElementById(`row-l${i}`).onclick = () => { shiftRow(i, -1) }
-    document.getElementById(`row-r${i}`).onclick = () => { shiftRow(i, 1) }
-    document.getElementById(`col-l${i}`).onclick = () => { shiftCol(i, 1) }
-    document.getElementById(`col-r${i}`).onclick = () => { shiftCol(i, -1) }
+    document.getElementById(`row-l${i}`).addEventListener('click', function(event) {
+        event.stopPropagation();
+        shiftRow(i, -1);
+    });
+    document.getElementById(`row-r${i}`).addEventListener('click', function(event) {
+        event.stopPropagation();
+        shiftRow(i, 1);
+    });
+    document.getElementById(`col-l${i}`).addEventListener('click', function(event) {
+        event.stopPropagation();
+        shiftCol(i, 1);
+    });
+    document.getElementById(`col-r${i}`).addEventListener('click', function(event) {
+        event.stopPropagation();
+        shiftCol(i, -1);
+    });
 }
 
 /**

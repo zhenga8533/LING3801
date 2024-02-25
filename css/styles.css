@@ -147,6 +147,15 @@ tr:hover {
     border: 0px;
 }
 
+.selectable:hover {
+    background-color: #303030;
+    cursor: pointer;
+}
+
+.selected {
+    color: gold;
+}
+
 /* Shift cipher styling */
 .number-input {
     padding: 0 2px;
