@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monoalphabetic</title>
+    <title>Transposition</title>
     <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
     <link rel="stylesheet" href="css/styles.css">
 
@@ -16,5 +16,18 @@
 </head>
 <body>
     <header id="header"></header>
+
+    <div id="body-container">
+        <div class="text-container">
+            <h3>Enter cipher text:</h3>
+            <textarea class="textbox" id="shift-text" placeholder="Enter text here..."></textarea>
+            <div class="input-container">
+                <button id="decrypt-button" class="button">Analyze</button>
+            </div>
+        </div>
+        <hr>
+    </div>
+    
+    <script type="module" src="js/transposition.js"></script>
 </body>
 </html>
