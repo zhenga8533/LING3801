@@ -83,7 +83,6 @@ function updateKey() {
     document.getElementById("key-table").innerHTML = keyTable + "</tbody>";
 }
 
-
 /**
  * Update google column chart.
  * 
@@ -145,7 +144,7 @@ function updateChart(id) {
     let letterFrequency = {};
     for (let j = 0; j < n / divs; j++) {
         if (j * divs + id >= n) break;
-        let c = text[j * divs + id].toLowerCase();
+        let c = text[j * divs + id]?.toLowerCase();
         letterFrequency[c] = (letterFrequency[c] ?? 0) + 1;
     }
 
@@ -163,15 +162,16 @@ function updateChart(id) {
 
     // Update HTML elements
     updateKey();
-    decryptVigenere();
+    if (document.getElementById("decrypt-key").value === "") decryptVigenere();
 }
 
 /**
  * Update charts when user presses on key length.
  * 
  * @param {Number} count - Length of suspected key.
+ * @param {String} key -
  */
-function updateCharts(count) {
+function updateCharts(count, key) {
     // Set charts HTML
     divs = count;
     document.getElementById("charts").innerHTML = "";
@@ -186,6 +186,10 @@ function updateCharts(count) {
 
     // Update each chart and their shift button listeners.
     for (let i = 0; i < divs; i++) {
+        if (key !== undefined) {
+            document.getElementById(`shift-${i}`).innerText = ("a".charCodeAt(0) - key[i].toLowerCase().charCodeAt(0) + 26) % 26;
+        }
+
         updateChart(i);
         document.getElementById(`left-${i}`).onclick = () => {
             const shift = document.getElementById(`shift-${i}`);
@@ -205,7 +209,7 @@ function updateCharts(count) {
  */
 function updateTable() {
     // Find repeating substrings in cipher text.
-    const cipehrText = document.getElementById("cipher-text").value;
+    const cipherText = document.getElementById("cipher-text").value;
 
     // Update table HTML
     const length = document.getElementById("factor-input").value;
@@ -223,7 +227,7 @@ function updateTable() {
     for (let i = 2; i <= length; i++) factors[i] = 0;
     let totalRepeats = 0;
 
-    const repeats = sortRepeats(findRepeats(cipehrText));
+    const repeats = sortRepeats(findRepeats(cipherText));
     let tableBody = "";
     for (let repeat in repeats) {
         let row = `<tr><td>${repeat}</td><td>${repeats[repeat].frequency}</td>`;
@@ -260,12 +264,12 @@ document.getElementById("analyze-button").onclick = updateTable;
  * Encrypts plain text using inputted key.
  */
 function encryptVigenere() {
+    const plainText = document.getElementById("plain-text").value.replace(/[^a-zA-Z]/g, '').toLowerCase();
     const key = document.getElementById("encrypt-key").value.replace(/[^a-zA-Z]/g, '').toLowerCase();
-    const plainText = document.getElementById("plain-text").value.toLowerCase();
-    let base = "a".charCodeAt(0);
+    const shifts = [];
 
     // Set shifts based on key
-    const shifts = [];
+    let base = "a".charCodeAt(0);
     for (let c of key) {
         shifts.push(c.charCodeAt(0) - base);
     }
@@ -275,8 +279,11 @@ function encryptVigenere() {
     let cipherText = "";
     for (let c of plainText) {
         if (/^[a-zA-Z0-9]+$/.test(c)) {
-            let shift = shifts[i++ % key.length];
-            cipherText += String.fromCharCode((c.toLowerCase().charCodeAt(0) - base + shift) % 26 + base).toUpperCase();
+            let shift = shifts[i % key.length];
+            if (shift === undefined) cipherText += "-";
+            else cipherText += String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base).toUpperCase();
+
+            if (i++ % 5 === 4) cipherText += " ";
         } else cipherText += c;
     }
     document.getElementById("cipher-text").value = cipherText;
@@ -287,24 +294,34 @@ document.getElementById("encrypt-button").onclick = encryptVigenere;
  * Shift cipher text into plain text using provided shift values.
  */
 function decryptVigenere() {
-    const cipherText = document.getElementById("cipher-text").value;
+    const cipherText = document.getElementById("cipher-text").value.toUpperCase();
+    const key = document.getElementById("decrypt-key").value.replace(/[^a-zA-Z]/g, '').toUpperCase();
     const shifts = [];
-    let plain = "";
 
     // Collect shift values
-    for (let i = 0; i < divs; i++) {
-        shifts.push(parseInt(document.getElementById(`shift-${i}`).innerText));
+    let base = "A".charCodeAt(0);
+    if (key === "") {
+        for (let i = 0; i < divs; i++) {
+            shifts.push(parseInt(document.getElementById(`shift-${i}`).innerText));
+        }
+    } else {
+        updateCharts(key.length, key);
+        for (let c of key) {
+            let code = c.charCodeAt(0);
+            shifts.push(base - code);
+        }
     }
 
     // Shift plain text
     let i = 0;
-    let base = "a".charCodeAt(0);
+    let plainText = "";
     for (let c of cipherText) {
-        if (/^[a-zA-Z0-9]+$/.test(c)) {
-            let shift = shifts[i++ % divs];
-            plain += String.fromCharCode((c.toLowerCase().charCodeAt(0) - base + shift) % 26 + base);
-        } else plain += c;
+        if (/[A-Z]/i.test(c)) {
+            let shift = shifts[i++ % shifts.length];
+            if (shift === undefined) plainText += "-";
+            else plainText += String.fromCharCode(((c.charCodeAt(0) - base + shift + 26) % 26) + base).toLowerCase();
+        } else plainText += c;
     }
-    document.getElementById("plain-text").value = plain;
+    document.getElementById("plain-text").value = plainText;
 }
 document.getElementById("decrypt-button").onclick = decryptVigenere;
