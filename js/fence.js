@@ -55,12 +55,15 @@ function encryptFence() {
 
     // Generate cipher text
     let cipherText = "";
+    let k = 0;
     for (let i = 0; i < height; i++) {
         let row = fence[i];
         for (let j = 0; j < row.length; j++) {
-            if (/^[a-zA-Z]+$/.test(row[j])) cipherText += row[j].toUpperCase();
+            if (/^[a-zA-Z]+$/.test(row[j])) {
+                cipherText += row[j].toUpperCase();
+                if (k++ % 5 === 4) cipherText += " ";
+            }
         }
-        cipherText += " ";
     }
     document.getElementById("cipher-text").value = cipherText;
 
@@ -72,7 +75,7 @@ document.getElementById("encrypt-button").onclick = encryptFence;
 /**
  * Decrypts the decrypt-input textarea.
  */
-function decipherFence() {
+function decryptFence() {
     // Validate height
     let height = parseInt(document.getElementById("decrypt-input").value);
     const positive = height > 0;
@@ -130,4 +133,4 @@ function decipherFence() {
     // Update table
     createTable(fence);
 }
-document.getElementById("decipher-button").onclick = decipherFence;
+document.getElementById("decipher-button").onclick = decryptFence;
