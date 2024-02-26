@@ -445,6 +445,7 @@ function findDigraph(char1, char2) {
  * Decrypts cipher text using playfair table/key and sets result into plain text.
  */
 function playfairDecrypt() {
+    countBigramFrequency();
     fixTable("decrypt-key");
     setTable();
     const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
@@ -459,7 +460,7 @@ function playfairDecrypt() {
     let plainText = '';
     digraphs.forEach(digraph => {
         const decryptedDigraph = findDigraph(digraph[0], digraph[1]);
-        plainText += decryptedDigraph[0].toLowerCase() + decryptedDigraph[1].toLowerCase() + " ";
+        plainText += decryptedDigraph[0].toLowerCase() + decryptedDigraph[1].toLowerCase();
     });
 
     document.getElementById("plain-text").value = plainText;
