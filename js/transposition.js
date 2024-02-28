@@ -129,6 +129,7 @@ function analyzeText() {
 let table = [];
 let tableOrder = [];
 let colSwap = [];
+let lastControl = undefined;
 const columnCheckbox = document.getElementById('column');
 const rowCheckbox = document.getElementById('row');
 
@@ -141,29 +142,66 @@ rowCheckbox.addEventListener('change', function() {
 });
 
 /**
+ * Shift the columns of the table array left or right.
  * 
- * @param {*} direction 
+ * @param {Number} direction - 1 for right shift, -1 for left shift
  */
 function shiftColumns(direction) {
-    // Determine the number of columns
-    const numColumns = table[0].length;
-
-    // Adjust the direction to ensure it remains within the bounds of the number of columns
-    const adjustedDirection = direction > 0 ? 1 : -1;
-
     // Apply the column shifting to each row of the table array
     table.forEach(row => {
-        // Perform the shifting
-        for (let i = 0; i < Math.abs(direction); i++) {
-            if (adjustedDirection === 1) {
-                row.unshift(row.pop());
-            } else {
-                row.push(row.shift());
-            }
+        if (direction === 1) {
+            row.unshift(row.pop());
+        } else {
+            row.push(row.shift());
         }
     });
 
+    // Shift column order as well;
+    if (direction === 1) {
+        tableOrder.unshift(tableOrder.pop());
+    } else {
+        tableOrder.push(tableOrder.shift());
+    }
+
     // Re-render the table with the updated table array
+    renderTable();
+}
+
+/**
+ * Creates the array and HTML table given text and size.
+ * 
+ * @param {Number} size - Max size of each row of table.
+ * @param {String} textID - ID of HTML text element to be used.
+ */
+function setTable(size, textID) {
+    table = [[]];
+    tableOrder = [];
+
+    const text = document.getElementById(textID).value.replace(/[^a-zA-Z]/g, "");
+    size = Math.min(size, text.length);
+    if (document.getElementById("row").checked) {
+        // Create table row by row
+        for (let c of text) {
+            let lastRow = table[table.length - 1];
+            if (lastRow.length < size) {
+                lastRow.push(c);
+            } else {
+                table.push([c]);
+            }
+        }
+    } else {
+        // Create table column by column
+        const rows = Math.ceil(text.length / size);
+        for (let i = 1; i < rows; i++) table.push([]);
+
+        for (let i in text) {
+            table[i % rows].push(text[i]);
+        }
+    }
+
+    // Set table ordering to default
+    for (let i = 1; i <= table[0].length; i++) tableOrder.push(i);
+
     renderTable();
 }
 
@@ -224,6 +262,8 @@ function renderTable() {
                     tableOrder[colSwap[1]] = tempOrder;
     
                     renderTable();
+                    if (lastControl === "encrypt") encryptCipher();
+                    else decryptCipher();
                 } else colElement.classList.toggle("selected");
             }
         }
@@ -233,6 +273,12 @@ function renderTable() {
     analyzeText();
 }
 
+/**
+ * Determines the character ordering of provided string.
+ * 
+ * @param {String} key - Key to analyze character ordering of.
+ * @returns {Number[]} - Array of indicies representing letter order.
+ */
 function getKeyOrder(key) {
     // Create an array to hold the positions of letters
     const base = "A".charCodeAt(0);
@@ -271,9 +317,10 @@ function getKeyOrder(key) {
 }
 
 /**
+ * Caclualtes all possible factors of provided number.
  * 
- * @param {*} number 
- * @returns 
+ * @param {Number} number - Original number to factorize.
+ * @returns {Number[]} - Array of all possible factors.
  */
 function getFactors(number) {
     // Initialize an array to store factors
@@ -291,6 +338,9 @@ function getFactors(number) {
     return factors;
 }
 
+/**
+ * Analyzes cipher text to create factor table.
+ */
 function analyzeCipher() {
     const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "");
     const factors = getFactors(cipherText.length);
@@ -311,7 +361,11 @@ function analyzeCipher() {
 }
 document.getElementById("analyze-button").onclick = analyzeCipher;
 
+/**
+ * Converts cipher text to plain text using decryption key or table.
+ */
 function decryptCipher() {
+    lastControl = "decrypt";
     const key = document.getElementById("decrypt-key").value;
     if (key !== "") {
         getKeyOrder(key);
@@ -336,39 +390,11 @@ function decryptCipher() {
 }
 document.getElementById("decrypt-button").onclick = decryptCipher;
 
-function setTable(size, textID) {
-    table = [[]];
-    tableOrder = [];
-
-    const text = document.getElementById(textID).value.replace(/[^a-zA-Z]/g, "");
-    size = Math.min(size, text.length);
-    if (document.getElementById("row").checked) {
-        // Create table row by row
-        for (let c of text) {
-            let lastRow = table[table.length - 1];
-            if (lastRow.length < size) {
-                lastRow.push(c);
-            } else {
-                table.push([c]);
-            }
-        }
-    } else {
-        // Create table column by column
-        const rows = Math.ceil(text.length / size);
-        for (let i = 1; i < rows; i++) table.push([]);
-
-        for (let i in text) {
-            table[i % rows].push(text[i]);
-        }
-    }
-
-    // Set table ordering to default
-    for (let i = 1; i <= table[0].length; i++) tableOrder.push(i);
-
-    renderTable();
-}
-
+/**
+ * Converts plain text to cipher text using encryption key or table.
+ */
 function encryptCipher() {
+    lastControl = "encrypt";
     const key = document.getElementById("encrypt-key").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
     if (key !== "") {
         getKeyOrder(key);
