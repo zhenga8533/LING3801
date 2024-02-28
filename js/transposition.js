@@ -1,4 +1,5 @@
 let table = [];
+let tableOrder = [];
 let colSwap = [];
 
 /**
@@ -96,6 +97,7 @@ document.getElementById("decrypt-button").onclick = analyzeCipher;
 
 function setTable(size) {
     table = [[]];
+    tableOrder = [];
 
     const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
     if (document.getElementById("row").checked) {
@@ -118,6 +120,9 @@ function setTable(size) {
         }
     }
 
+    // Set table ordering to default
+    for (let i = 1; i <= table[0].length; i++) tableOrder.push(i);
+
     renderTable();
 }
 
@@ -127,8 +132,8 @@ function setTable(size) {
 function renderTable() {
     // Create table header
     let tpTable = "<tr>";
-    for (let i = 1; i <= table[0].length; i++) {
-        tpTable += `<th id="col-${i}" class="selectable">${i}</th>`;
+    for (let i in tableOrder) {
+        tpTable += `<th id="col-${parseInt(i) + 1}" class="selectable">${tableOrder[i]}</th>`;
     }
     tpTable += ' <th><button id="left-button">&lt</button> Cnsnts</th><th>Vowels <button id="right-button">&gt</button></th> </tr>';
 
@@ -175,9 +180,13 @@ function renderTable() {
                         table[row][colSwap[0]] = table[row][colSwap[1]];
                         table[row][colSwap[1]] = temp;
                     }
+
+                    // Swap ordering
+                    let tempOrder = tableOrder[colSwap[0]];
+                    tableOrder[colSwap[0]] = tableOrder[colSwap[1]];
+                    tableOrder[colSwap[1]] = tempOrder;
     
                     renderTable();
-                    document.getElementById(`col-${colSwap[0] + 1}`).classList.toggle("selected");
                 } else colElement.classList.toggle("selected");
             }
         }
