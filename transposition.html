@@ -24,7 +24,13 @@
             <h3>Enter cipher text:</h3>
             <textarea class="textbox" id="cipher-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
-                <a id="decrypt-button" class="button" href="#encrypt">Factor</a>
+                <h3>Enter key: </h3>
+                <input id="decrypt-key" type="text" placeholder="key required...">
+                <a id="decrypt-button" class="button" href="#encrypt">Decrypt</a>
+            </div>
+            <div class="input-container">
+                <h3>Need more info?</h3>
+                <a id="analyze-button" class="button" href="#encrypt">Factor</a>
             </div>
         </div>
         <hr>
@@ -32,7 +38,7 @@
             <h3>Enter plain text:</h3>
             <textarea class="textbox" id="plain-text" placeholder="Enter text here..."></textarea>
             <div class="input-container">
-                <h3>Enter key: </h3>
+                <h3>Enter key:</h3>
                 <input id="encrypt-key" type="text" placeholder="key required...">
                 <a id="encrypt-button" class="button" href="#header">Encrypt</a>
             </div>

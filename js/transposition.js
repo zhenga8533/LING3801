@@ -55,6 +55,43 @@ function shiftColumns(direction) {
     renderTable();
 }
 
+function getKeyOrder(key) {
+    // Create an array to hold the positions of letters
+    const base = "A".charCodeAt(0);
+    const codes = key.split("").map(c => c.charCodeAt(0) - base);
+    const orderedCodes = codes.slice();
+
+    // Increment codes if necessary
+    const records = new Set();
+    for (let i in codes) {
+        let c1 = codes[i];
+
+        if (records.has(c1)) {
+            // Nested loop to increment all greater/equal char codes
+            for (let j in codes) {
+                let c2 = codes[j]
+
+                if (c2 > c1 || (c2 === c1 && j >= i)) {
+                    orderedCodes[j]++;
+                }
+            }
+        } else records.add(c1);
+    }
+  
+    // Sort the ordered codes and get their positions
+    const sortedArray = orderedCodes.slice().sort((a, b) => a - b);
+    const positions = {};
+    sortedArray.forEach((element, index) => {
+        positions[element] = index;
+    });
+
+    // Create an array to store position indices
+    const indices = orderedCodes.map(element => positions[element] + 1);
+
+    // Return the array of position indices in sorted order
+    return indices;
+}
+
 /**
  * 
  * @param {*} number 
@@ -94,18 +131,32 @@ function analyzeCipher() {
         }
     }
 }
-document.getElementById("decrypt-button").onclick = analyzeCipher;
+document.getElementById("analyze-button").onclick = analyzeCipher;
 
 function decryptCipher() {
+    const key = document.getElementById("decrypt-key").value;
+    if (key !== "") {
+        getKeyOrder(key);
+
+        // Set initial table
+        setTable(key.length, "cipher-text");
+    
+        // Reorder table based on key
+        tableOrder = getKeyOrder(key);
+        table = table.map(row => tableOrder.map(index => row[index - 1]));
+        renderTable();
+    }
+
     // Create table body using cipher text and get plain text
     let plainText = "";
     for (let i = 0; i < table.length; i++) {
-        plainText += row.join("").toLowerCase();
+        plainText += table[i].join("").toLowerCase();
     }
 
     // Update HTML elements
     document.getElementById("plain-text").value = plainText;
 }
+document.getElementById("decrypt-button").onclick = decryptCipher;
 
 function setTable(size, textID) {
     table = [[]];
@@ -330,53 +381,27 @@ function analyzeText() {
     document.getElementById("trigram-freq").innerHTML = trigramTable;
 }
 
-function getLetterOrder(str) {
-    // Create an array to hold the positions of letters
-    const base = "A".charCodeAt(0);
-    const codes = str.split("").map(c => c.charCodeAt(0) - base);
-    const orderedCodes = codes.slice();
-
-    // Increment codes if necessary
-    const records = new Set();
-    for (let i in codes) {
-        let c1 = codes[i];
-
-        if (records.has(c1)) {
-            // Nested loop to increment all greater/equal char codes
-            for (let j in codes) {
-                let c2 = codes[j]
-
-                if (c2 > c1 || (c2 === c1 && j >= i)) {
-                    orderedCodes[j]++;
-                }
-            }
-        } else records.add(c1);
-    }
-  
-    // Sort the ordered codes and get their positions
-    const sortedArray = orderedCodes.slice().sort((a, b) => a - b);
-    const positions = {};
-    sortedArray.forEach((element, index) => {
-        positions[element] = index;
-    });
-
-    // Create an array to store position indices
-    const indices = orderedCodes.map(element => positions[element] + 1);
-
-    // Return the array of position indices in sorted order
-    return indices;
-}
-
 function encryptCipher() {
     const key = document.getElementById("encrypt-key").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
-    if (key === "") return;
+    if (key !== "") {
+        getKeyOrder(key);
 
-    // Set initial table
-    setTable(key.length, "plain-text");
+        // Set initial table
+        setTable(key.length, "plain-text");
+    
+        // Reorder table based on key
+        tableOrder = getKeyOrder(key);
+        table = table.map(row => tableOrder.map(index => row[index - 1]));
+        renderTable();
+    }
 
-    // Reorder table based on key
-    tableOrder = getLetterOrder(key);
-    table = table.map(row => tableOrder.map(index => row[index - 1]));
-    renderTable();
+    // Create table body using cipher text and get plain text
+    let cipherText = "";
+    for (let i = 0; i < table.length; i++) {
+        cipherText += table[i].join("").toUpperCase();
+    }
+
+    // Update HTML elements
+    document.getElementById("cipher-text").value = cipherText;
 }
 document.getElementById("encrypt-button").onclick = encryptCipher;
