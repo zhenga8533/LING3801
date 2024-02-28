@@ -89,20 +89,33 @@ function analyzeCipher() {
     // Set button listeners
     for (let factor of factors) {
         document.getElementById(`s${factor}`).onclick = () => {
-            setTable(factor);
+            setTable(factor, "cipher-text");
+            decryptCipher();
         }
     }
 }
 document.getElementById("decrypt-button").onclick = analyzeCipher;
 
-function setTable(size) {
+function decryptCipher() {
+    // Create table body using cipher text and get plain text
+    let plainText = "";
+    for (let i = 0; i < table.length; i++) {
+        plainText += row.join("").toLowerCase();
+    }
+
+    // Update HTML elements
+    document.getElementById("plain-text").value = plainText;
+}
+
+function setTable(size, textID) {
     table = [[]];
     tableOrder = [];
 
-    const cipherText = document.getElementById("cipher-text").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
+    const text = document.getElementById(textID).value.replace(/[^a-zA-Z]/g, "");
+    size = Math.min(size, text.length);
     if (document.getElementById("row").checked) {
         // Create table row by row
-        for (let c of cipherText) {
+        for (let c of text) {
             let lastRow = table[table.length - 1];
             if (lastRow.length < size) {
                 lastRow.push(c);
@@ -112,11 +125,11 @@ function setTable(size) {
         }
     } else {
         // Create table column by column
-        const rows = Math.ceil(cipherText.length / size);
+        const rows = Math.ceil(text.length / size);
         for (let i = 1; i < rows; i++) table.push([]);
 
-        for (let i in cipherText) {
-            table[i % rows].push(cipherText[i]);
+        for (let i in text) {
+            table[i % rows].push(text[i]);
         }
     }
 
@@ -138,32 +151,28 @@ function renderTable() {
     tpTable += ' <th><button id="left-button">&lt</button> Cnsnts</th><th>Vowels <button id="right-button">&gt</button></th> </tr>';
 
     // Create table body using cipher text and get plain text
-    let plainText = "";
     for (let i = 0; i < table.length; i++) {
-        let row = table[i];
         let vowels = 0;
-        plainText += row.join("").toLowerCase();
 
         tpTable += "<tr>";
-        for (let j = 0; j < row.length; j++) {
-            tpTable += `<td>${table[i][j]}</td>`;
-            if (/[AEIOU]/.test(table[i][j])) vowels++;
+        for (let j = 0; j < tableOrder.length; j++) {
+            tpTable += `<td>${table[i][j] ?? ""}</td>`;
+            if (table[i][j] !== undefined && /[aeiouAEIOU]/.test(table[i][j])) vowels++;
         }
 
-        let consonants = row.length - vowels;
-        tpTable += `<td>${consonants} (${Math.round(consonants / row.length * 1_000) / 10}%)</td>`;
-        tpTable += `<td>${vowels} (${Math.round(vowels / row.length * 1_000) / 10}%)</td></tr>`;
+        let consonants = tableOrder.length - vowels;
+        tpTable += `<td>${consonants} (${Math.round(consonants / tableOrder.length * 1_000) / 10}%)</td>`;
+        tpTable += `<td>${vowels} (${Math.round(vowels / tableOrder.length * 1_000) / 10}%)</td></tr>`;
     }
 
     // Update HTML elements
-    document.getElementById("plain-text").value = plainText;
     document.getElementById("tp-table").innerHTML = tpTable;
     document.getElementById("left-button").onclick = () => { shiftColumns(-1) };
     document.getElementById("right-button").onclick = () => { shiftColumns(1) };
 
     // Set column swapping
     colSwap = [];
-    for (let i = 0; i < table[0].length; i++) {
+    for (let i = 0; i < tableOrder.length; i++) {
         let colElement = document.getElementById(`col-${i + 1}`);
         colElement.onclick = () => {
             const index = colSwap.indexOf(i);
@@ -175,7 +184,7 @@ function renderTable() {
     
                 // Swap if two columns selected
                 if (colSwap.length === 2) {
-                    for (let row = 0; row < table.length; row++) {
+                    for (let row = 0; row < tableOrder.length; row++) {
                         let temp = table[row][colSwap[0]];
                         table[row][colSwap[0]] = table[row][colSwap[1]];
                         table[row][colSwap[1]] = temp;
@@ -320,3 +329,54 @@ function analyzeText() {
     });
     document.getElementById("trigram-freq").innerHTML = trigramTable;
 }
+
+function getLetterOrder(str) {
+    // Create an array to hold the positions of letters
+    const base = "A".charCodeAt(0);
+    const codes = str.split("").map(c => c.charCodeAt(0) - base);
+    const orderedCodes = codes.slice();
+
+    // Increment codes if necessary
+    const records = new Set();
+    for (let i in codes) {
+        let c1 = codes[i];
+
+        if (records.has(c1)) {
+            // Nested loop to increment all greater/equal char codes
+            for (let j in codes) {
+                let c2 = codes[j]
+
+                if (c2 > c1 || (c2 === c1 && j >= i)) {
+                    orderedCodes[j]++;
+                }
+            }
+        } else records.add(c1);
+    }
+  
+    // Sort the ordered codes and get their positions
+    const sortedArray = orderedCodes.slice().sort((a, b) => a - b);
+    const positions = {};
+    sortedArray.forEach((element, index) => {
+        positions[element] = index;
+    });
+
+    // Create an array to store position indices
+    const indices = orderedCodes.map(element => positions[element] + 1);
+
+    // Return the array of position indices in sorted order
+    return indices;
+}
+
+function encryptCipher() {
+    const key = document.getElementById("encrypt-key").value.replace(/[^a-zA-Z]/g, "").toUpperCase();
+    if (key === "") return;
+
+    // Set initial table
+    setTable(key.length, "plain-text");
+
+    // Reorder table based on key
+    tableOrder = getLetterOrder(key);
+    table = table.map(row => tableOrder.map(index => row[index - 1]));
+    renderTable();
+}
+document.getElementById("encrypt-button").onclick = encryptCipher;
