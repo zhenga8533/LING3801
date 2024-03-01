@@ -250,7 +250,7 @@ function renderTable() {
     
                 // Swap if two columns selected
                 if (colSwap.length === 2) {
-                    for (let row = 0; row < tableOrder.length; row++) {
+                    for (let row = 0; row < table.length; row++) {
                         let temp = table[row][colSwap[0]];
                         table[row][colSwap[0]] = table[row][colSwap[1]];
                         table[row][colSwap[1]] = temp;
